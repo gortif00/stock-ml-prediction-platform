@@ -1,8 +1,8 @@
 <div align="center">
 
-# 📈 PID Bolsa
+# 📈 Stock ML Prediction Platform
 
-### Sistema Inteligente de Predicción de Mercados Financieros
+### Enterprise-Grade Financial Market Prediction System
 
 [![Docker](https://img.shields.io/badge/Docker-Ready-2496ED?logo=docker&logoColor=white)](https://www.docker.com/)
 [![Python](https://img.shields.io/badge/Python-3.11+-3776AB?logo=python&logoColor=white)](https://www.python.org/)
@@ -11,59 +11,59 @@
 [![MCP](https://img.shields.io/badge/MCP-Enabled-7C3AED?logo=anthropic&logoColor=white)](https://modelcontextprotocol.io/)
 [![License](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
 
-*Predicción de mercados financieros mediante Machine Learning, automatización inteligente y análisis conversacional con IA*
+*AI-powered financial market prediction platform with Machine Learning ensemble models, automated workflows, and conversational AI integration*
 
-[Características](#-características) • [Instalación](#-instalación-rápida) • [Arquitectura](#-arquitectura) • [API](#-api-rest) • [Machine Learning](#-machine-learning) • [MCP](#-integración-con-claude-desktop) • [Documentación](#-documentación-completa)
+[Features](#-features) • [Quick Start](#-quick-start) • [Architecture](#-architecture) • [API](#-rest-api) • [Machine Learning](#-machine-learning) • [MCP Integration](#-claude-desktop-integration) • [Documentation](#-documentation)
 
 </div>
 
 ---
 
-## 🚀 Características
+## 🚀 Features
 
-### 🤖 Machine Learning & Predicción
+### 🤖 Machine Learning & Prediction
 
-- **Ensemble de 7 Modelos ML**: LinearRegression, RandomForest, Prophet, XGBoost, SVR, LightGBM, CatBoost
-- **Votación Inteligente**: Señales de trading (+1, 0, -1) por consenso de modelos
-- **Validación Automática**: Backtesting diario comparando predicciones vs valores reales
-- **Backfill Histórico**: Generación de predicciones históricas sin look-ahead bias para análisis retrospectivo
-- **Hyperparameter Tuning**: Grid search o Bayesian optimization, auto-reentrenamiento con mejores parámetros, configuraciones optimizadas por mercado
-- **Almacenamiento Persistente**: Modelos entrenados guardados para reutilización
+- **7-Model Ensemble**: LinearRegression, RandomForest, Prophet, XGBoost, SVR, LightGBM, CatBoost
+- **Intelligent Voting System**: Trading signals (+1, 0, -1) based on model consensus
+- **Automated Validation**: Daily backtesting comparing predictions vs actual values
+- **Historical Backfill**: Generate historical predictions without look-ahead bias for retrospective analysis
+- **Hyperparameter Tuning**: Grid search or Bayesian optimization with auto-retraining
+- **Persistent Storage**: Trained models saved for reuse and reproducibility
 
-### 📊 Análisis de Mercados
+### 📊 Market Analysis
 
-- **3 Índices Principales**: IBEX35 (España), S&P500 (USA), NIKKEI (Japón)
-- **Cobertura Global**: Europa, América, Asia-Pacífico
-- **Indicadores Técnicos**: SMA(20/50), RSI(14), Volatilidad, Retornos
-- **Análisis de Noticias**: Dual-source (Yahoo Finance + Google RSS) con soporte para estructuras múltiples
-- **Datos Históricos**: Precios OHLCV desde Yahoo Finance
+- **3 Major Indices**: IBEX35 (Spain), S&P500 (USA), NIKKEI (Japan)
+- **Global Coverage**: Europe, Americas, Asia-Pacific
+- **Technical Indicators**: SMA(20/50), RSI(14), Volatility, Returns
+- **News Analysis**: Dual-source (Yahoo Finance + Google RSS) with sentiment analysis
+- **Historical Data**: OHLCV prices from Yahoo Finance
 
-### 🔄 Automatización & Orquestación
+### 🔄 Automation & Orchestration
 
-- **n8n Workflows**: Pipelines ETL automáticos para ingesta y procesamiento
-- **Programación Diaria**: Actualización automática de datos, indicadores y predicciones
-- **Reportes Automáticos**: Generación de resúmenes diarios por mercado
+- **n8n Workflows**: Automated ETL pipelines for data ingestion and processing
+- **Daily Scheduling**: Automatic updates for data, indicators, and predictions
+- **Automated Reports**: Daily market summary generation
 
-### 🐳 Arquitectura Cloud-Native
+### 🐳 Cloud-Native Architecture
 
-- **Docker Compose**: Stack completo con un solo comando
-- **Microservicios**: PostgreSQL, FastAPI, n8n, Adminer
-- **Docker Optimizado**: Imagen MCP pre-construida con todas las dependencias
-- **Volúmenes Persistentes**: Datos y modelos sobreviven reinicios
+- **Docker Compose**: Complete stack with a single command
+- **Microservices**: PostgreSQL, FastAPI, n8n, Adminer
+- **Optimized Images**: Pre-built MCP image with all dependencies
+- **Persistent Volumes**: Data and models survive restarts
 
-### 💬 Integración con IA Conversacional
+### 💬 Conversational AI Integration
 
-- **Model Context Protocol (MCP)**: Servidor MCP para Claude Desktop
-- **7 Herramientas Conversacionales**: Consulta precios, predicciones, indicadores, noticias via chat
-- **Análisis en Tiempo Real**: Pregunta a Claude sobre mercados en lenguaje natural
-- **Ejecución Dockerizada**: MCP server aislado con todas las dependencias
+- **Model Context Protocol (MCP)**: MCP server for Claude Desktop
+- **7 Conversational Tools**: Query prices, predictions, indicators, news via chat
+- **Real-Time Analysis**: Ask Claude about markets in natural language
+- **Dockerized Execution**: Isolated MCP server with all dependencies
 
-## 🏗️ Arquitectura
+## 🏗️ Architecture
 
 ```mermaid
 graph TB
-    subgraph "🖥️ Cliente"
-        USER[👤 Usuario]
+    subgraph "🖥️ Client Layer"
+        USER[👤 User]
         CLAUDE[🤖 Claude Desktop]
     end
     
@@ -75,7 +75,7 @@ graph TB
         ADM[🔧 Adminer<br/>Port 8081]
     end
     
-    subgraph "☁️ External"
+    subgraph "☁️ External Services"
         YF[📊 Yahoo Finance]
         NEWS[📰 News APIs]
     end
@@ -97,173 +97,171 @@ graph TB
     style N8N fill:#FF6D5A,stroke:#DC2626,color:#fff
 ```
 
-### 📦 Stack Tecnológico
+### 📦 Technology Stack
 
-| Componente | Tecnología | Puerto | Función |
-|------------|------------|--------|---------|
-| **Base de Datos** | PostgreSQL 15 | 15433 | Almacenamiento de precios, indicadores, predicciones |
-| **API REST** | FastAPI + Uvicorn | 8082 | Endpoints para ETL, ML, reporting |
-| **MCP Server** | Python + MCP SDK | stdio | Integración con Claude Desktop |
-| **Automatización** | n8n | 5678 | Workflows programados y ETL |
-| **Admin DB** | Adminer | 8081 | Interfaz web para gestión de BD |
-| **ML Models** | scikit-learn, XGBoost, Prophet | - | Ensemble de 7 modelos |
-| **Containerización** | Docker + Docker Compose | - | Orquestación completa |
+| Component | Technology | Port | Function |
+|-----------|------------|------|----------|
+| **Database** | PostgreSQL 15 | 15433 | Storage for prices, indicators, predictions |
+| **REST API** | FastAPI + Uvicorn | 8082 | Endpoints for ETL, ML, reporting |
+| **MCP Server** | Python + MCP SDK | stdio | Claude Desktop integration |
+| **Automation** | n8n | 5678 | Scheduled workflows and ETL |
+| **DB Admin** | Adminer | 8081 | Web interface for database management |
+| **ML Models** | scikit-learn, XGBoost, Prophet | - | 7-model ensemble |
+| **Containerization** | Docker + Docker Compose | - | Complete orchestration |
 
-## 📦 Componentes del Sistema
+## 📦 System Components
 
-### 🗄️ Base de Datos (PostgreSQL 15)
+### 🗄️ Database (PostgreSQL 15)
 
-**Puerto**: 15433 | **Credenciales**: finanzas/finanzas_pass
+**Port**: 15433 | **Credentials**: finanzas/finanzas_pass
 
-#### Schema
+#### Database Schema
 
-| Tabla | Descripción | Campos Clave |
-|-------|-------------|--------------|
-| `prices` | Datos históricos OHLCV | symbol, date, open, high, low, close, volume |
-| `indicators` | Indicadores técnicos | symbol, date, sma_20, sma_50, rsi_14, volatility_20 |
-| `signals` | Señales de trading | symbol, date, signal (-1, 0, +1) |
-| `news` | Noticias financieras | symbol, title, url, published_at, sentiment |
-| `ml_predictions` | Predicciones ML | symbol, prediction_date, model_name, predicted_value, true_value, error_abs |
+| Table | Description | Key Fields |
+|-------|-------------|------------|
+| `prices` | Historical OHLCV data | symbol, date, open, high, low, close, volume |
+| `indicators` | Technical indicators | symbol, date, sma_20, sma_50, rsi_14, volatility_20 |
+| `signals` | Trading signals | symbol, date, signal (-1, 0, +1) |
+| `news` | Financial news | symbol, title, url, published_at, sentiment |
+| `ml_predictions` | ML predictions | symbol, prediction_date, model_name, predicted_value, true_value, error_abs |
 
-#### Gestión con Adminer
+#### Database Management with Adminer
 
-Accede a **http://localhost:8081** para:
-- Explorar tablas y datos
-- Ejecutar consultas SQL
-- Exportar/importar datos
-- Ver estructura de BD
+Access **http://localhost:8081** to:
+- Explore tables and data
+- Execute SQL queries
+- Export/import data
+- View database structure
 
-### 🚀 API REST (FastAPI)
+### 🚀 REST API (FastAPI)
 
-**Puerto**: 8082 | **Docs**: http://localhost:8082/docs
+**Port**: 8082 | **Docs**: http://localhost:8082/docs
 
-Servidor de alto rendimiento con:
-- **20+ endpoints** para ETL, ML y reporting
-- **Documentación interactiva** (Swagger UI)
-- **Validación automática** con Pydantic
-- **Respuestas rápidas** con caché en memoria
+High-performance server with:
+- **20+ endpoints** for ETL, ML and reporting
+- **Interactive documentation** (Swagger UI)
+- **Automatic validation** with Pydantic
+- **Fast responses** with in-memory cache
 
 ### 💬 MCP Server (Claude Integration)
 
-**Protocolo**: stdio | **Docker**: Imagen optimizada pre-construida
+**Protocol**: stdio | **Docker**: Pre-built optimized image
 
-Servidor especializado que:
-- Expone **7 herramientas** a Claude Desktop
-- Ejecuta en **entorno Docker aislado**
-- Accede a **misma BD** que API REST
-- Permite **análisis conversacional** en lenguaje natural
+Specialized server that:
+- Exposes **7 tools** to Claude Desktop
+- Runs in **isolated Docker environment**
+- Accesses **same database** as REST API
+- Enables **conversational analysis** in natural language
 
-[Ver documentación completa →](docs/mcp/README.md)
+[See complete documentation →](docs/mcp/README.md)
 
-### ⚡ n8n (Automatización)
+### ⚡ n8n (Automation)
 
-**Puerto**: 5678 | **Credenciales**: admin/admin123
+**Port**: 5678 | **Credentials**: admin/admin123
 
-Plataforma de automatización para:
-- **Workflows programados** (cron jobs)
-- **Pipelines ETL** automáticos
-- **Integración** con servicios externos
-- **Generación de reportes** PDF/Email
+Automation platform for:
+- **Scheduled workflows** (cron jobs)
+- **Automated ETL pipelines**
+- **Integration** with external services
+- **Report generation** (PDF/Email)
 
-Workflows predefinidos:
-1. 🌅 **Daily Update** (8:00 AM): Descarga precios y noticias
-2. 📊 **Compute Indicators** (8:30 AM): Calcula indicadores técnicos
-3. 🤖 **ML Prediction** (9:00 AM): Ejecuta ensemble y guarda predicción
-4. ✅ **Validation** (9:30 AM): Valida predicciones del día anterior
-5. 📧 **Daily Report** (10:00 AM): Envía resumen diario
+Pre-configured workflows:
+1. 🌅 **Daily Update** (8:00 AM): Download prices and news
+2. 📊 **Compute Indicators** (8:30 AM): Calculate technical indicators
+3. 🤖 **ML Prediction** (9:00 AM): Run ensemble and save prediction
+4. ✅ **Validation** (9:30 AM): Validate previous day predictions
+5. 📧 **Daily Report** (10:00 AM): Send daily summary
 
-## 🚀 Instalación Rápida
+## 🚀 Quick Start
 
-### Prerrequisitos
+### Prerequisites
 
 ```bash
-# Verificar instalaciones
+# Check installations
 docker --version          # Docker 20.10+
 docker-compose --version  # Docker Compose 2.0+
-python3 --version         # Python 3.11+ (opcional, para desarrollo)
+python3 --version         # Python 3.11+ (optional, for development)
 ```
 
-### Opción 1: Docker Compose (Recomendado)
+### Option 1: Docker Compose (Recommended)
 
 ```bash
-# 1. Clonar el repositorio
-git clone https://github.com/acastc03/PID_bolsa.git
-cd PID_bolsa
+# 1. Clone the repository
+git clone https://github.com/gortif00/stock-ml-prediction-platform.git
+cd stock-ml-prediction-platform
 
-# 2. Configurar variables de entorno (opcional, hay valores por defecto)
+# 2. Configure environment variables (optional, defaults provided)
 cp .env.example .env
 
-# 3. Iniciar todos los servicios
+# 3. Start all services
 docker-compose up -d
 
-# 4. Verificar que todo está corriendo
+# 4. Verify everything is running
 docker-compose ps
 
-# 5. Ver logs en tiempo real
+# 5. View real-time logs
 docker-compose logs -f mcp
 ```
 
-**✅ ¡Listo!** Los servicios estarán disponibles en:
-- 🚀 API REST: http://localhost:8082/docs
+**✅ Ready!** Services will be available at:
+- 🚀 REST API: http://localhost:8082/docs
 - 🗄️ Adminer: http://localhost:8081
 - ⚡ n8n: http://localhost:5678
 
-### Opción 2: Desarrollo Local
+### Option 2: Local Development
 
 ```bash
-# 1. Crear entorno virtual
+# 1. Create virtual environment
 python3 -m venv venv
-source venv/bin/activate  # En Windows: venv\Scripts\activate
+source venv/bin/activate  # On Windows: venv\Scripts\activate
 
-# 2. Instalar dependencias
+# 2. Install dependencies
 pip install -r mcp_server/requirements.txt
 
-# 3. Iniciar solo la base de datos
+# 3. Start only the database
 docker-compose up -d db
 
-# 4. Ejecutar el servidor localmente
+# 4. Run the server locally
 cd mcp_server
 uvicorn app.main:app --reload --port 8082
 ```
 
-### Configuración Inicial
+### Initial Configuration
 
-El archivo `.env` contiene las configuraciones principales:
+The `.env` file contains main configurations:
 
 ```env
-# Puertos expuestos
+# Exposed ports
 POSTGRES_PORT=15433
 N8N_PORT=5678
 MCP_PORT=8082
 
-# Credenciales de BD
+# Database credentials
 POSTGRES_USER=finanzas
 POSTGRES_PASSWORD=finanzas_pass
 POSTGRES_DB=indices
 MCP_DB_NAME=indices
 ```
 
-### Verificación de Instalación
+### Installation Verification
 
 ```bash
-# Estado de contenedores
-docker-compose ps
-
-# Salud de la API
+# Container status
+# API health check
 curl http://localhost:8082/health
 
-# Conexión a PostgreSQL
+# PostgreSQL connection
 docker exec -it db_finanzas psql -U finanzas -d indices -c "\dt"
 
-# Ver logs
+# View logs
 docker-compose logs --tail=50 mcp
 ```
 
-## 📡 API REST
+## 📡 REST API
 
-### 📖 Documentación Interactiva
+### 📖 Interactive Documentation
 
-La API incluye documentación completa con **Swagger UI** y **ReDoc**:
+The API includes complete documentation with **Swagger UI** and **ReDoc**:
 
 - **Swagger UI**: http://localhost:8082/docs
 - **ReDoc**: http://localhost:8082/redoc
@@ -271,105 +269,105 @@ La API incluye documentación completa con **Swagger UI** y **ReDoc**:
 
 ### 🔥 Quick Start
 
-#### Pipeline Completo - IBEX35
+#### Complete Pipeline - IBEX35
 
 ```bash
-# 1. Actualizar precios (último mes)
+# 1. Update prices (last month)
 curl "http://localhost:8082/update_prices?market=ibex35&period=1mo"
 
-# 2. Actualizar noticias (última semana)
+# 2. Update news (last week)
 curl "http://localhost:8082/update_news?markets=IBEX35&days=7"
 
-# 3. Calcular indicadores técnicos
+# 3. Calculate technical indicators
 curl "http://localhost:8082/compute_indicators?market=ibex35"
 
-# 4. Generar señales de trading
+# 4. Generate trading signals
 curl "http://localhost:8082/compute_signals?market=ibex35"
 
-# 5. Predicción ML (ensemble de 7 modelos)
+# 5. ML prediction (7-model ensemble)
 curl "http://localhost:8082/predecir_ensemble?symbol=^IBEX"
 
-# 6. Resumen diario completo
+# 6. Complete daily summary
 curl "http://localhost:8082/daily_summary?market=ibex35"
 ```
 
-### 📊 Endpoints por Categoría
+### 📊 Endpoints by Category
 
-#### 🔄 ETL - Ingesta de Datos
+#### 🔄 ETL - Data Ingestion
 
 ```bash
-# Actualizar precios (períodos: 1d, 5d, 1mo, 3mo, 6mo, 1y)
+# Update prices (periods: 1d, 5d, 1mo, 3mo, 6mo, 1y)
 GET /update_prices?market=ibex35&period=1mo
 
-# Actualizar noticias de múltiples mercados
+# Update news from multiple markets
 GET /update_news?markets=IBEX35,SP500,NASDAQ&days=7
 ```
 
-#### 📈 ETL - Indicadores y Señales
+#### 📈 ETL - Indicators and Signals
 
 ```bash
-# Calcular indicadores técnicos (SMA, RSI, Volatilidad)
+# Calculate technical indicators (SMA, RSI, Volatility)
 GET /compute_indicators?market=ibex35
 
-# Generar señales de trading (+1, 0, -1)
+# Generate trading signals (+1, 0, -1)
 GET /compute_signals?market=ibex35
 ```
 
 #### 🤖 Machine Learning
 
 ```bash
-# Predicción simple basada en reglas
+# Simple rule-based prediction
 GET /predecir_simple?symbol=^IBEX
 
-# Predicción ensemble (7 modelos ML + votación)
+# Ensemble prediction (7 ML models + voting)
 GET /predecir_ensemble?symbol=^IBEX
 
-# Forzar reentrenamiento de modelos
+# Force model retraining
 POST /retrain_models?symbol=^IBEX
 
-# Validar predicciones del día anterior
+# Validate previous day predictions
 POST /validate_predictions
 
-# Validar predicciones de fecha específica
+# Validate predictions for specific date
 POST /validate_predictions?date_str=2025-12-01
 ```
 
-#### 📋 Reporting y Análisis
+#### 📋 Reporting and Analysis
 
 ```bash
-# Resumen diario completo del mercado
+# Complete daily market summary
 GET /daily_summary?market=ibex35
 
-# Información de modelos ML guardados
+# ML model information
 GET /model_info?symbol=^IBEX
 
 # Health check
 GET /health
 ```
 
-### 📝 Ejemplos con Python
+### 📝 Python Examples
 
 ```python
 import requests
 
 BASE_URL = "http://localhost:8082"
 
-# Obtener precio actual
+# Get current price
 response = requests.get(f"{BASE_URL}/update_prices", params={
     "market": "ibex35",
     "period": "1d"
 })
 print(response.json())
 
-# Predicción ML
+# ML prediction
 response = requests.get(f"{BASE_URL}/predecir_ensemble", params={
     "symbol": "^IBEX"
 })
 prediction = response.json()
-print(f"Señal: {prediction['señal_final']}")
-print(f"Consenso: {prediction['consenso']}")
+print(f"Signal: {prediction['señal_final']}")
+print(f"Consensus: {prediction['consenso']}")
 
-# Resumen diario
+# Daily summary
 response = requests.get(f"{BASE_URL}/daily_summary", params={
     "market": "ibex35"
 })
@@ -377,26 +375,26 @@ summary = response.json()
 print(summary['formatted_report'])
 ```
 
-## 💬 Integración con Claude Desktop
+## 💬 Claude Desktop Integration
 
-### ¿Qué es MCP?
+### What is MCP?
 
-**Model Context Protocol (MCP)** permite que Claude Desktop acceda a herramientas externas en tiempo real. Con esta integración, puedes analizar mercados financieros mediante conversación natural.
+**Model Context Protocol (MCP)** allows Claude Desktop to access external tools in real-time. With this integration, you can analyze financial markets through natural conversation.
 
-### 🚀 Setup en 3 Pasos
+### 🚀 Setup in 3 Steps
 
-#### 1. Construir la imagen Docker del MCP Server
+#### 1. Build the MCP Server Docker image
 
 ```bash
-cd PID_bolsa
+cd stock-ml-prediction-platform
 docker build -t mcp-finance-server:latest -f mcp_server_claude/Dockerfile .
 ```
 
-#### 2. Configurar Claude Desktop
+#### 2. Configure Claude Desktop
 
-**macOS:** Edita `~/Library/Application Support/Claude/claude_desktop_config.json`
+**macOS:** Edit `~/Library/Application Support/Claude/claude_desktop_config.json`
 
-**Windows:** Edita `%APPDATA%\Claude\claude_desktop_config.json`
+**Windows:** Edit `%APPDATA%\Claude\claude_desktop_config.json`
 
 ```json
 {
@@ -501,13 +499,13 @@ uvicorn app.main:app --reload --host 0.0.0.0 --port 8000
 python download_ibex.py
 ```
 
-Esto descargará los datos del IBEX35 en `./data/^IBEX_prices.csv`.
+This will download IBEX35 data to `./data/^IBEX_prices.csv`.
 
 ## 🤖 Machine Learning
 
-### Arquitectura de Ensemble
+### Ensemble Architecture
 
-El sistema implementa un **ensemble de 7 modelos** con votación mayoritaria:
+The system implements a **7-model ensemble** with majority voting:
 
 ```mermaid
 graph LR
@@ -533,52 +531,52 @@ graph LR
     style SIGNAL fill:#10B981,stroke:#059669,color:#fff
 ```
 
-### Modelos Implementados
+### Implemented Models
 
-| Modelo | Tipo | Ventajas | Parámetros Clave |
-|--------|------|----------|------------------|
+| Model | Type | Advantages | Key Parameters |
+|-------|------|------------|----------------|
 | **Linear Regression** | Baseline | Simple, interpretable | - |
-| **Random Forest** | Tree Ensemble | Robusto, no requiere normalización | n_estimators=100 |
-| **Prophet** | Time Series | Maneja estacionalidad y tendencias | daily_seasonality=True |
-| **XGBoost** | Gradient Boosting | Alta precisión, rápido | max_depth=5, learning_rate=0.1 |
-| **SVR** | Kernel Methods | Efectivo en espacios de alta dimensión | kernel='rbf', C=1.0 |
-| **LightGBM** | Gradient Boosting | Muy rápido, eficiente con memoria | num_leaves=31 |
-| **CatBoost** | Gradient Boosting | Maneja categorías automáticamente | iterations=100 |
+| **Random Forest** | Tree Ensemble | Robust, no normalization needed | n_estimators=100 |
+| **Prophet** | Time Series | Handles seasonality and trends | daily_seasonality=True |
+| **XGBoost** | Gradient Boosting | High accuracy, fast | max_depth=5, learning_rate=0.1 |
+| **SVR** | Kernel Methods | Effective in high-dimensional spaces | kernel='rbf', C=1.0 |
+| **LightGBM** | Gradient Boosting | Very fast, memory efficient | num_leaves=31 |
+| **CatBoost** | Gradient Boosting | Handles categories automatically | iterations=100 |
 
 ### Feature Engineering
 
-#### Features Base (Precios OHLCV)
+#### Base Features (OHLCV Prices)
 - `Open`, `High`, `Low`, `Close`, `Volume`
 
-#### Indicadores Técnicos
-- **SMA(20)**: Media móvil simple de 20 días
-- **SMA(50)**: Media móvil simple de 50 días
+#### Technical Indicators
+- **SMA(20)**: Simple Moving Average 20-day
+- **SMA(50)**: Simple Moving Average 50-day
 - **RSI(14)**: Relative Strength Index (0-100)
-- **Volatilidad(20)**: Desviación estándar de retornos
+- **Volatility(20)**: Standard deviation of returns
 
-#### Features Temporales
-- `day_of_week`: Lunes=0, Viernes=4
+#### Temporal Features
+- `day_of_week`: Monday=0, Friday=4
 - `month`: 1-12
-- `return_1d`: Retorno del día anterior
+- `return_1d`: Previous day return
 
-### Señales de Trading
+### Trading Signals
 
-El sistema genera 3 tipos de señales:
+The system generates 3 types of signals:
 
-| Señal | Valor | Significado | Acción |
-|-------|-------|-------------|--------|
-| 🟢 COMPRA | +1 | Precio subirá | Abrir posición larga |
-| 🟡 NEUTRAL | 0 | Sin movimiento claro | Mantener posición |
-| 🔴 VENTA | -1 | Precio bajará | Cerrar posición / Short |
+| Signal | Value | Meaning | Action |
+|--------|-------|---------|--------|
+| 🟢 BUY | +1 | Price will rise | Open long position |
+| 🟡 NEUTRAL | 0 | No clear movement | Hold position |
+| 🔴 SELL | -1 | Price will fall | Close position / Short |
 
-### Proceso de Votación
+### Voting Process
 
-1. Cada modelo predice señal independientemente: +1, 0, o -1
-2. Se cuentan los votos para cada señal
-3. **Mayoría simple** determina señal final
-4. **Consenso** = (votos_mayoria / 7) × 100%
+1. Each model predicts signal independently: +1, 0, or -1
+2. Votes are counted for each signal
+3. **Simple majority** determines final signal
+4. **Consensus** = (majority_votes / 7) × 100%
 
-**Ejemplo:**
+**Example:**
 ```
 LinearRegression: +1
 RandomForest:     +1
@@ -588,18 +586,18 @@ SVR:              0
 LightGBM:         +1
 CatBoost:         +1
 
-Señal Final: +1 (COMPRA)
-Consenso: 85.7% (6/7 modelos)
+Final Signal: +1 (BUY)
+Consensus: 85.7% (6/7 models)
 ```
 
-### Validación y Backtesting
+### Validation and Backtesting
 
-- **Validación Diaria**: Compara predicciones del día anterior vs precio real
-- **Métricas**: Error absoluto, error porcentual
-- **Almacenamiento**: Todas las predicciones se guardan en `ml_predictions`
-- **Tracking**: Performance individual por modelo y por mercado
+- **Daily Validation**: Compares previous day predictions vs actual price
+- **Metrics**: Absolute error, percentage error
+- **Storage**: All predictions saved in `ml_predictions`
+- **Tracking**: Individual performance per model and per market
 
-### 🔄 Backfill de Predicciones Históricas
+### 🔄 Historical Predictions Backfill
 
 El sistema incluye funcionalidad para **generar predicciones históricas sin look-ahead bias**, útil para:
 - ✅ Análisis de rendimiento histórico de modelos
@@ -612,45 +610,45 @@ El sistema incluye funcionalidad para **generar predicciones históricas sin loo
 El script implementa **filtrado temporal estricto** para evitar información del futuro:
 
 ```python
-# Para cada fecha histórica D:
+# For each historical date D:
 predict_ensemble(symbol, as_of_date=D, force_retrain=True)
-# ✅ Solo usa datos disponibles hasta fecha D
-# ✅ Reentrena modelos con datos históricos correctos
-# ✅ Sin look-ahead bias
+# ✅ Only uses data available until date D
+# ✅ Retrains models with correct historical data
+# ✅ No look-ahead bias
 ```
 
-**Flujo del Backfill:**
+**Backfill Flow:**
 
 ```mermaid
 graph LR
-    A[Fecha D] --> B[_load_features<br/>WHERE date <= D]
-    B --> C[Entrenar 7 modelos<br/>con datos hasta D]
-    C --> D[Generar predicción<br/>para D+1]
-    D --> E[Guardar en<br/>ml_predictions]
+    A[Date D] --> B[_load_features<br/>WHERE date <= D]
+    B --> C[Train 7 models<br/>with data until D]
+    C --> D[Generate prediction<br/>for D+1]
+    D --> E[Save to<br/>ml_predictions]
     
     style A fill:#3B82F6,stroke:#1E40AF,color:#fff
     style C fill:#7C3AED,stroke:#5B21B6,color:#fff
     style E fill:#10B981,stroke:#059669,color:#fff
 ```
 
-#### Cómo Usar
+#### How to Use
 
-**Opción 1: Script Helper (Recomendado)**
+**Option 1: Helper Script (Recommended)**
 ```bash
 ./run_backfill.sh
 ```
 
-**Opción 2: Directo desde Docker**
+**Option 2: Direct from Docker**
 ```bash
 docker exec -it mcp_finance python -m scripts.backfill_predictions
 ```
 
-**Opción 3: Personalizado en Python**
+**Option 3: Custom Python**
 ```python
 from scripts.backfill_predictions import backfill_predictions_for_symbol
 from datetime import date
 
-# Backfill para IBEX35 (1-10 diciembre 2024)
+# Backfill for IBEX35 (Dec 1-10, 2024)
 backfill_predictions_for_symbol(
     symbol="^IBEX",
     start_date=date(2024, 12, 1),
@@ -658,148 +656,148 @@ backfill_predictions_for_symbol(
 )
 ```
 
-#### Consideraciones Importantes
+#### Important Considerations
 
-⚠️ **Rendimiento**: El backfill reentrena 7 modelos ML por cada fecha, lo que puede tardar varios minutos por día.
+⚠️ **Performance**: Backfill retrains 7 ML models for each date, which may take several minutes per day.
 
-⚠️ **Requisitos**: Deben existir datos de precios e indicadores para todas las fechas del rango.
+⚠️ **Requirements**: Price and indicator data must exist for all dates in the range.
 
-⚠️ **Ejecución**: Solo funciona dentro del contenedor Docker (requiere `DB_HOST=db`).
+⚠️ **Execution**: Only works inside Docker container (requires `DB_HOST=db`).
 
-✅ **Validación**: Después del backfill, valida los resultados:
+✅ **Validation**: After backfill, validate results:
 ```bash
-# Validar predicciones de una fecha específica
+# Validate predictions for a specific date
 curl "http://localhost:8082/validate_predictions?date_str=2024-12-05"
 
-# Analizar rendimiento en un rango
+# Analyze performance in a range
 curl "http://localhost:8082/model_performance?symbol=^IBEX&days=30"
 ```
 
-📚 **Documentación completa**: Ver `BACKFILL_README.md` para detalles técnicos sobre la implementación.
+📚 **Complete documentation**: See `BACKFILL_README.md` for technical implementation details.
 
-## 🗂️ Estructura del Proyecto
+## 🗂️ Project Structure
 
 ```
-PID_bolsa/
-├── docker-compose.yml          # Orquestación de servicios
-├── .env                        # Variables de entorno
-├── download_ibex.py           # Script de descarga manual
-├── requests.http              # Ejemplos de peticiones HTTP
-├── data/                      # Datos persistentes
-│   ├── db/                    # Volumen PostgreSQL
-│   └── models/                # Modelos ML guardados
-├── db-init/                   # Scripts de inicialización BD
-│   ├── 01_init.sql           # Tablas principales
-│   └── 02_ml_predictions.sql # Tabla de predicciones
-├── mcp_server/               # API FastAPI
+stock-ml-prediction-platform/
+├── docker-compose.yml          # Service orchestration
+├── .env                        # Environment variables
+├── download_ibex.py           # Manual download script
+├── requests.http              # HTTP request examples
+├── data/                      # Persistent data
+│   ├── db/                    # PostgreSQL volume
+│   └── models/                # Saved ML models
+├── db-init/                   # DB initialization scripts
+│   ├── 01_init.sql           # Main tables
+│   └── 02_ml_predictions.sql # Predictions table
+├── mcp_server/               # FastAPI API
 │   ├── Dockerfile
 │   ├── requirements.txt
 │   ├── app/
 │   │   ├── __init__.py
-│   │   └── main.py          # Endpoints FastAPI
-│   └── scripts/             # Módulos de lógica
-│       ├── assets.py        # Resolución de símbolos
-│       ├── fetch_data.py    # Descarga de precios
-│       ├── indicators.py    # Cálculo de indicadores
-│       ├── models.py        # Modelos ML
-│       ├── news.py          # Scraping de noticias
-│       ├── save_predictions.py    # Persistencia de predicciones
-│       ├── validate_predictions.py # Validación de modelos
-│       ├── reporting.py     # Generación de reportes
-│       └── model_storage.py # Gestión de modelos
-├── n8n/                      # Datos de n8n
-└── PID/                      # Entorno virtual Python
+│   │   └── main.py          # FastAPI endpoints
+│   └── scripts/             # Logic modules
+│       ├── assets.py        # Symbol resolution
+│       ├── fetch_data.py    # Price download
+│       ├── indicators.py    # Indicator calculation
+│       ├── models.py        # ML models
+│       ├── news.py          # News scraping
+│       ├── save_predictions.py    # Prediction persistence
+│       ├── validate_predictions.py # Model validation
+│       ├── reporting.py     # Report generation
+│       └── model_storage.py # Model management
+├── n8n/                      # n8n data
+└── PID/                      # Python virtual environment
 ```
 
-## 🔄 Workflow Diario Recomendado
+## 🔄 Recommended Daily Workflow
 
-### Configurar en n8n o ejecutar manualmente:
+### Configure in n8n or run manually:
 
-1. **08:00** - Actualizar precios de mercados
+1. **08:00** - Update market prices
    ```bash
    curl "http://localhost:8080/update_prices?market=ibex35&period=5d"
    ```
 
-2. **08:05** - Descargar noticias recientes
+2. **08:05** - Download recent news
    ```bash
    curl "http://localhost:8080/update_news?markets=IBEX35,SP500&days=1"
    ```
 
-3. **08:10** - Calcular indicadores técnicos
+3. **08:10** - Calculate technical indicators
    ```bash
    curl "http://localhost:8080/compute_indicators?market=ibex35"
    ```
 
-4. **08:15** - Generar señales de trading
+4. **08:15** - Generate trading signals
    ```bash
    curl "http://localhost:8080/compute_signals?market=ibex35"
    ```
 
-5. **08:20** - Reentrenar modelos y hacer predicción
+5. **08:20** - Retrain models and make prediction
    ```bash
    curl "http://localhost:8080/retrain_models?symbol=^IBEX"
    ```
 
-6. **08:25** - Validar predicciones del día anterior
+6. **08:25** - Validate previous day predictions
    ```bash
    curl -X POST "http://localhost:8080/validate_predictions"
    ```
 
-7. **08:30** - Generar reporte diario
+7. **08:30** - Generate daily report
    ```bash
    curl "http://localhost:8080/daily_summary?market=ibex35"
    ```
 
-## 🛠️ Mantenimiento
+## 🛠️ Maintenance
 
-### Ver Logs
+### View Logs
 
 ```bash
-# Logs de todos los servicios
+# Logs from all services
 docker-compose logs -f
 
-# Logs de un servicio específico
+# Logs from a specific service
 docker-compose logs -f mcp
 docker-compose logs -f db
 docker-compose logs -f n8n
 ```
 
-### Backup de la Base de Datos
+### Database Backup
 
 ```bash
 docker exec db_finanzas pg_dump -U finanzas indices > backup_$(date +%Y%m%d).sql
 ```
 
-### Restaurar Backup
+### Restore Backup
 
 ```bash
 docker exec -i db_finanzas psql -U finanzas indices < backup_20251126.sql
 ```
 
-### Limpiar Modelos Antiguos
+### Clean Old Models
 
-Los modelos se limpian automáticamente manteniendo los últimos 7 días. Para limpiar manualmente:
+Models are automatically cleaned keeping the last 7 days. To clean manually:
 
 ```bash
 curl "http://localhost:8080/retrain_models?symbol=^IBEX"
 ```
 
-### Reiniciar Servicios
+### Restart Services
 
 ```bash
-# Reiniciar todos los servicios
+# Restart all services
 docker-compose restart
 
-# Reiniciar un servicio específico
+# Restart a specific service
 docker-compose restart mcp
 ```
 
-### Detener y Eliminar Todo
+### Stop and Remove Everything
 
 ```bash
 docker-compose down
 
-# Eliminar también los volúmenes (⚠️ BORRA TODOS LOS DATOS)
+# Also remove volumes (⚠️ DELETES ALL DATA)
 docker-compose down -v
 ```
 
