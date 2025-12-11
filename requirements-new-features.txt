@@ -1,0 +1,14 @@
+# Requirements for new features
+
+# Dashboard
+streamlit>=1.28.0
+plotly>=5.17.0
+
+# Telegram Bot
+python-telegram-bot>=20.6
+
+# Already in project (verify these are in main requirements.txt)
+pandas>=2.0.0
+numpy>=1.24.0
+scikit-learn>=1.3.0
+psycopg2-binary>=2.9.0

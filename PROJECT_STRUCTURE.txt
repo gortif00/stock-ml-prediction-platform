@@ -1,0 +1,258 @@
+
+╔══════════════════════════════════════════════════════════════════════════════╗
+║                                                                              ║
+║           📁 STOCK ML PREDICTION PLATFORM - PROJECT STRUCTURE                ║
+║                                                                              ║
+╚══════════════════════════════════════════════════════════════════════════════╝
+
+stock-ml-prediction-platform/
+│
+├── 📱 MAIN APPLICATIONS (Root Level)
+│   │
+│   ├── streamlit_dashboard.py          ⭐ Interactive Web Dashboard
+│   │                                      → 4 tabs: Prices, Indicators, Backtesting, Heatmap
+│   │                                      → Real-time charts with Plotly
+│   │                                      → Model performance comparison
+│   │
+│   ├── telegram_bot.py                 ⭐ Telegram Bot for Alerts
+│   │                                      → 10+ interactive commands
+│   │                                      → Personalized subscriptions
+│   │                                      → Real-time predictions & backtesting
+│   │
+│   └── docker-compose.yml              ⭐ Docker Infrastructure
+│                                          → PostgreSQL, FastAPI, n8n, Adminer
+│                                          → One-command deployment
+│
+├── 🔧 MCP SERVER (Claude Integration)
+│   │
+│   └── mcp_server/
+│       │
+│       ├── app/
+│       │   ├── main.py                 → FastAPI MCP server (Port 8082)
+│       │   └── __init__.py
+│       │
+│       ├── scripts/                    ⭐ CORE ML & DATA MODULES
+│       │   │
+│       │   ├── 📊 Data Acquisition
+│       │   │   ├── fetch_data.py       → Yahoo Finance data ingestion
+│       │   │   ├── assets.py           → Market symbols management
+│       │   │   └── clean_data.py       → Data cleaning & validation
+│       │   │
+│       │   ├── 📈 Technical Analysis
+│       │   │   ├── indicators.py       → Basic indicators (SMA, RSI, Volatility)
+│       │   │   └── advanced_indicators.py  ⭐ Advanced (MACD, Bollinger, ADX, ATR)
+│       │   │
+│       │   ├── 🤖 Machine Learning
+│       │   │   ├── models.py           ⭐ 7 ML models + ensemble voting
+│       │   │   ├── backtesting.py      ⭐ Performance validation system
+│       │   │   ├── model_storage.py    → Model persistence (.pkl files)
+│       │   │   ├── model_evaluation.py → Metrics calculation
+│       │   │   ├── save_predictions.py → Prediction storage
+│       │   │   ├── validate_predictions.py → Historical validation
+│       │   │   ├── backfill_predictions.py → Historical backfill
+│       │   │   └── build_validation_dataset.py → Dataset construction
+│       │   │
+│       │   ├── 📰 News & Sentiment
+│       │   │   └── news.py             → News scraping & sentiment analysis
+│       │   │
+│       │   ├── 📊 Reporting
+│       │   │   └── reporting.py        → Daily reports & summaries
+│       │   │
+│       │   └── ⚙️ Configuration
+│       │       └── config.py           → Database & environment config
+│       │
+│       ├── catboost_info/              → CatBoost training logs
+│       ├── data/                       → Temporary data files
+│       ├── Dockerfile                  → MCP server Docker image
+│       ├── requirements.txt            → Python dependencies
+│       └── requirements-lock.txt       → Locked versions
+│
+├── 🗄️ DATABASE & INFRASTRUCTURE
+│   │
+│   ├── db-init/
+│   │   ├── 01_init.sql                → Database schema
+│   │   │                                 Tables: prices, indicators, signals, news
+│   │   └── 02_ml_predictions.sql      → ML predictions table
+│   │                                     Tracks: model_name, predictions, errors
+│   │
+│   └── data/
+│       ├── db/                        → PostgreSQL data volume (persistent)
+│       │                                 Auto-managed by Docker
+│       └── models/                    → Saved ML models (.pkl files)
+│                                         One per model per symbol
+│
+├── ⚙️ AUTOMATION & WORKFLOWS
+│   │
+│   ├── n8n/                           → n8n workflow engine
+│   │   ├── config                     → n8n configuration
+│   │   ├── nodes/                     → Custom n8n nodes
+│   │   ├── binaryData/                → Binary attachments
+│   │   ├── git/                       → Workflow version control
+│   │   └── ssh/                       → SSH keys
+│   │
+│   └── n8n_data/                      → n8n data volume (persistent)
+│       ├── config
+│       └── nodes/
+│
+├── 📜 UTILITY SCRIPTS
+│   │
+│   └── scripts/
+│       ├── quickstart.sh              ⭐ Interactive Launch Menu
+│       │                                 Options:
+│       │                                 1) Launch Dashboard
+│       │                                 2) Start Telegram Bot
+│       │                                 3) Run Backtesting
+│       │                                 4) Calculate Indicators
+│       │                                 5) Run Everything
+│       │                                 6) View Documentation
+│       │
+│       ├── run_backfill.sh            → Historical data backfill
+│       │                                 Generates past predictions
+│       │                                 No look-ahead bias
+│       │
+│       └── README.md                  → Scripts documentation
+│
+├── 🧪 TESTING
+│   │
+│   └── tests/
+│       ├── test_3_markets.py          → Tests for IBEX, S&P500, NIKKEI
+│       ├── test_backfill_fix.py       → Backfill functionality tests
+│       └── README.md                  → Test documentation
+│
+├── 📊 REPORTS & OUTPUTS
+│   │
+│   ├── backtest_reports/              ⭐ Backtesting Results (Auto-generated)
+│   │   ├── backtest_report_IBEX_20251211_143022.json
+│   │   ├── backtest_report_SP500_*.json
+│   │   └── README.md                  → Report format documentation
+│   │
+│   └── reports/                       → General reports
+│       ├── daily_summaries/           → Daily market reports
+│       ├── performance/               → Performance analysis
+│       └── README.md                  → Reports documentation
+│
+├── 📚 DOCUMENTATION
+│   │
+│   └── docs/
+│       ├── README.md                  → Project overview
+│       ├── NEW_FEATURES.md            ⭐ Latest features guide (500+ lines)
+│       ├── REQUIREMENTS.md            → System requirements & architecture
+│       ├── BACKFILL_README.md         → Backfill documentation
+│       ├── CHECKLIST.md               ⭐ Verification checklist
+│       ├── RESUMEN_IMPLEMENTACION.md  → Implementation summary (Spanish)
+│       ├── IMPLEMENTATION_SUMMARY.txt → Visual summary
+│       ├── README_NEW_SECTION.md      → README additions template
+│       │
+│       └── mcp/                       → MCP-specific documentation
+│           ├── README.md              → MCP overview
+│           ├── GUIA_COMPLETA.md       → Complete MCP guide (Spanish)
+│           ├── EJEMPLOS.md            → Usage examples
+│           └── DOCKER_SETUP.md        → Docker MCP setup
+│
+├── 📋 CONFIGURATION FILES
+│   │
+│   ├── .env                           ⭐ Environment Variables
+│   │                                     POSTGRES_PORT=15433
+│   │                                     POSTGRES_USER=finanzas
+│   │                                     POSTGRES_PASSWORD=finanzas_pass
+│   │                                     N8N_PORT=5678
+│   │                                     MCP_PORT=8082
+│   │
+│   ├── .gitignore                     → Git ignore rules
+│   ├── requirements-new-features.txt  ⭐ New features dependencies
+│   │                                     streamlit, plotly, python-telegram-bot
+│   │
+│   ├── LICENSE                        → MIT License
+│   └── README.md                      ⭐ Main documentation (1100+ lines)
+│
+└── 🐍 OPTIONAL: Virtual Environments
+    └── PID/                           → Python virtual environment
+        ├── bin/
+        ├── lib/
+        └── pyvenv.cfg
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+📊 PROJECT STATISTICS
+
+├── Total Lines of Code:       ~15,000+
+├── Python Modules:             25+ files
+├── ML Models:                  7 models
+├── Technical Indicators:       13+ indicators
+├── REST API Endpoints:         20+
+├── Telegram Commands:          10+
+├── Dashboard Tabs:             4 tabs
+├── Database Tables:            6+ tables
+├── Docker Services:            5 services
+└── Documentation Files:        15+ docs
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+🔑 KEY FILES TO KNOW
+
+┌─────────────────────────────────────────────────────────────────────────┐
+│ MUST-READ FILES                                                         │
+└─────────────────────────────────────────────────────────────────────────┘
+
+1. README.md                           → Start here! Complete documentation
+2. docs/NEW_FEATURES.md                → Latest features guide
+3. scripts/quickstart.sh               → Easy launch script
+4. .env                                → Configuration
+5. docker-compose.yml                  → Infrastructure setup
+
+┌─────────────────────────────────────────────────────────────────────────┐
+│ CORE ML FILES                                                           │
+└─────────────────────────────────────────────────────────────────────────┘
+
+1. mcp_server/scripts/models.py        → 7 ML models + ensemble
+2. mcp_server/scripts/backtesting.py   → Performance validation
+3. mcp_server/scripts/advanced_indicators.py → Technical indicators
+4. mcp_server/scripts/fetch_data.py    → Data ingestion
+
+┌─────────────────────────────────────────────────────────────────────────┐
+│ USER INTERFACES                                                         │
+└─────────────────────────────────────────────────────────────────────────┘
+
+1. streamlit_dashboard.py              → Web dashboard
+2. telegram_bot.py                     → Mobile alerts
+3. mcp_server/app/main.py             → REST API
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+🚀 QUICK NAVIGATION
+
+Want to...                           → Check this file
+───────────────────────────────────────────────────────────────────────────
+Launch everything                    → ./scripts/quickstart.sh
+View predictions                     → streamlit_dashboard.py
+Get mobile alerts                    → telegram_bot.py
+Add new ML model                     → mcp_server/scripts/models.py
+Add technical indicator              → mcp_server/scripts/advanced_indicators.py
+Run backtesting                      → mcp_server/scripts/backtesting.py
+Fetch market data                    → mcp_server/scripts/fetch_data.py
+Configure database                   → mcp_server/scripts/config.py
+Setup infrastructure                 → docker-compose.yml
+Read documentation                   → docs/NEW_FEATURES.md
+Verify installation                  → docs/CHECKLIST.md
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+📦 FOLDER PURPOSES
+
+Directory              Purpose                           Auto-generated?
+──────────────────────────────────────────────────────────────────────────
+mcp_server/scripts/    Core ML & data processing         No
+scripts/               Utility scripts                   No
+tests/                 Test suite                        No
+backtest_reports/      Backtesting results              Yes (by backtesting.py)
+reports/               General reports                   Yes (by reporting.py)
+data/db/               PostgreSQL data                   Yes (by Docker)
+data/models/           Trained ML models                Yes (by models.py)
+docs/                  Documentation                     No
+n8n/ & n8n_data/      Workflow automation              Yes (by n8n)
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Last Updated: December 11, 2025
+Version: 2.0.0 (with new features)
+Maintainer: Stock ML Platform Team

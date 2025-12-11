@@ -13,7 +13,7 @@
 
 *AI-powered financial market prediction platform with Machine Learning ensemble models, automated workflows, and conversational AI integration*
 
-[Features](#-features) • [Quick Start](#-quick-start) • [Architecture](#-architecture) • [API](#-rest-api) • [Machine Learning](#-machine-learning) • [MCP Integration](#-claude-desktop-integration) • [Documentation](#-documentation)
+[Features](#-features) • [Architecture](#-architecture) • [Project Structure](#-project-structure) • [Quick Start](#-quick-start) • [API](#-rest-api) • [Machine Learning](#-machine-learning) • [MCP Integration](#-claude-desktop-integration) • [Documentation](#-documentation)
 
 </div>
 
@@ -171,6 +171,121 @@ Pre-configured workflows:
 3. 🤖 **ML Prediction** (9:00 AM): Run ensemble and save prediction
 4. ✅ **Validation** (9:30 AM): Validate previous day predictions
 5. 📧 **Daily Report** (10:00 AM): Send daily summary
+
+## 📁 Project Structure
+
+```
+stock-ml-prediction-platform/
+│
+├── 📱 Main Applications
+│   ├── streamlit_dashboard.py          # Interactive web dashboard
+│   ├── telegram_bot.py                 # Telegram bot for alerts
+│   └── docker-compose.yml              # Docker orchestration
+│
+├── 🔧 MCP Server (Claude Integration)
+│   └── mcp_server/
+│       ├── app/
+│       │   ├── main.py                 # FastAPI MCP server
+│       │   └── __init__.py
+│       └── scripts/                    # Core ML & Data modules
+│           ├── assets.py               # Market symbols management
+│           ├── fetch_data.py           # Data ingestion (Yahoo Finance)
+│           ├── indicators.py           # Technical indicators (SMA, RSI, etc.)
+│           ├── advanced_indicators.py  # Advanced indicators (MACD, Bollinger, ADX)
+│           ├── models.py               # 7 ML models + ensemble
+│           ├── backtesting.py          # Performance validation system
+│           ├── save_predictions.py     # Prediction storage
+│           ├── validate_predictions.py # Historical validation
+│           ├── backfill_predictions.py # Historical data backfill
+│           ├── news.py                 # News scraping & sentiment
+│           ├── reporting.py            # Report generation
+│           ├── model_storage.py        # Model persistence
+│           ├── model_evaluation.py     # Model metrics
+│           ├── clean_data.py           # Data cleaning
+│           ├── build_validation_dataset.py
+│           └── config.py               # Database configuration
+│
+├── 🗄️ Database & Infrastructure
+│   ├── db-init/
+│   │   ├── 01_init.sql                # Database schema
+│   │   └── 02_ml_predictions.sql      # ML tables
+│   └── data/
+│       ├── db/                         # PostgreSQL data volume
+│       └── models/                     # Saved ML models
+│
+├── ⚙️ Automation & Workflows
+│   ├── n8n/                            # n8n workflows
+│   │   └── config                      # n8n configuration
+│   └── n8n_data/                       # n8n data volume
+│
+├── 📜 Utility Scripts
+│   └── scripts/
+│       ├── quickstart.sh               # Interactive launch menu
+│       ├── run_backfill.sh            # Historical data backfill
+│       └── README.md                   # Scripts documentation
+│
+├── 🧪 Testing
+│   └── tests/
+│       ├── test_3_markets.py          # Market tests
+│       ├── test_backfill_fix.py       # Backfill tests
+│       └── README.md                   # Test documentation
+│
+├── 📊 Reports & Outputs
+│   ├── backtest_reports/              # Backtesting results (JSON)
+│   │   └── README.md
+│   └── reports/                        # General reports
+│       └── README.md
+│
+├── 📚 Documentation
+│   └── docs/
+│       ├── README.md                   # Project overview
+│       ├── NEW_FEATURES.md            # Latest features guide
+│       ├── REQUIREMENTS.md            # System requirements
+│       ├── BACKFILL_README.md         # Backfill documentation
+│       ├── CHECKLIST.md               # Verification checklist
+│       ├── RESUMEN_IMPLEMENTACION.md  # Implementation summary (ES)
+│       ├── IMPLEMENTATION_SUMMARY.txt # Visual summary
+│       ├── README_NEW_SECTION.md      # README additions
+│       └── mcp/                        # MCP-specific docs
+│           ├── README.md
+│           ├── GUIA_COMPLETA.md
+│           ├── EJEMPLOS.md
+│           └── DOCKER_SETUP.md
+│
+├── 📋 Configuration Files
+│   ├── .env                           # Environment variables
+│   ├── .gitignore                     # Git ignore rules
+│   ├── requirements-new-features.txt  # New features dependencies
+│   ├── LICENSE                        # MIT License
+│   └── README.md                      # This file
+│
+└── 🐍 Virtual Environments (optional)
+    └── PID/                           # Python virtual environment
+```
+
+### 📦 Key Directories Explained
+
+| Directory | Purpose | Key Files |
+|-----------|---------|-----------|
+| `mcp_server/scripts/` | Core ML logic and data processing | `models.py`, `backtesting.py`, `indicators.py` |
+| `scripts/` | Utility scripts for automation | `quickstart.sh`, `run_backfill.sh` |
+| `tests/` | Test suite for validation | `test_3_markets.py`, `test_backfill_fix.py` |
+| `backtest_reports/` | Backtesting results (auto-generated) | `backtest_report_*.json` |
+| `docs/` | Comprehensive documentation | `NEW_FEATURES.md`, `REQUIREMENTS.md` |
+| `data/db/` | PostgreSQL data persistence | Database files |
+| `data/models/` | Trained ML models storage | `.pkl` model files |
+| `db-init/` | Database initialization | SQL schema files |
+| `n8n/` & `n8n_data/` | Workflow automation | n8n configuration |
+
+### 🔑 Important Files
+
+- **`streamlit_dashboard.py`** → Web dashboard (4 tabs: Prices, Indicators, Backtesting, Heatmap)
+- **`telegram_bot.py`** → Telegram bot with 10+ commands
+- **`mcp_server/scripts/models.py`** → 7 ML models + ensemble voting
+- **`mcp_server/scripts/backtesting.py`** → Performance validation with metrics
+- **`mcp_server/scripts/advanced_indicators.py`** → MACD, Bollinger, ADX, ATR, etc.
+- **`scripts/quickstart.sh`** → Interactive menu for all features
+- **`docker-compose.yml`** → Complete infrastructure setup
 
 ## 🚀 Quick Start
 

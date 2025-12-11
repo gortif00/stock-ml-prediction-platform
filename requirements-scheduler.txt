@@ -1,0 +1,9 @@
+# Scheduler Dependencies
+
+# APScheduler for task scheduling (n8n alternative)
+apscheduler>=3.10.4
+
+# Already in main project (verify these exist)
+# pandas>=2.0.0
+# numpy>=1.24.0
+# psycopg2-binary>=2.9.0
