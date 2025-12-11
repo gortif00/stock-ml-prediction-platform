@@ -115,7 +115,7 @@ case $option in
         print_info "Dashboard estará disponible en http://localhost:8501"
         print_info "Presiona Ctrl+C para detener"
         echo ""
-        streamlit run streamlit_dashboard.py
+        streamlit run scripts/ui/streamlit_dashboard.py
         ;;
     
     2)
@@ -133,7 +133,7 @@ case $option in
         print_success "Token configurado"
         print_info "Bot iniciando... Presiona Ctrl+C para detener"
         echo ""
-        python3 telegram_bot.py
+        python3 scripts/ui/telegram_bot.py
         ;;
     
     3)
@@ -214,18 +214,18 @@ EOF
         if [ -z "$TELEGRAM_BOT_TOKEN" ]; then
             print_warning "TELEGRAM_BOT_TOKEN no configurado, solo se lanzará Dashboard"
             print_info "Lanzando Dashboard en el puerto 8501..."
-            streamlit run streamlit_dashboard.py
+            streamlit run scripts/ui/streamlit_dashboard.py
         else
             print_info "Lanzando Dashboard (puerto 8501) y Bot de Telegram..."
             print_info "Presiona Ctrl+C para detener ambos"
             
             # Lanzar ambos en background
-            streamlit run streamlit_dashboard.py &
+            streamlit run scripts/ui/streamlit_dashboard.py &
             STREAMLIT_PID=$!
             
             sleep 2
             
-            python3 telegram_bot.py &
+            python3 scripts/ui/telegram_bot.py &
             BOT_PID=$!
             
             print_success "Dashboard: http://localhost:8501 (PID: $STREAMLIT_PID)"
@@ -254,8 +254,8 @@ EOF
         print_info "  • Domingos 2:00 AM - Reentrenar modelos"
         echo ""
         print_info "Para probar una tarea ahora:"
-        print_info "  python3 scheduler.py --run fetch"
-        print_info "  python3 scheduler.py --run all"
+        print_info "  python3 scripts/automation/scheduler.py --run fetch"
+        print_info "  python3 scripts/automation/scheduler.py --run all"
         echo ""
         print_info "Iniciando scheduler... Presiona Ctrl+C para detener"
         echo ""
@@ -268,7 +268,7 @@ EOF
             pip3 install apscheduler
         fi
         
-        python3 scheduler.py
+        python3 scripts/automation/scheduler.py
         ;;
     
     7)

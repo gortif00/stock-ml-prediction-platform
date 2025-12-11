@@ -177,10 +177,17 @@ Pre-configured workflows:
 ```
 stock-ml-prediction-platform/
 │
-├── 📱 Main Applications
-│   ├── streamlit_dashboard.py          # Interactive web dashboard
-│   ├── telegram_bot.py                 # Telegram bot for alerts
-│   └── docker-compose.yml              # Docker orchestration
+├── 📱 Main Applications & Scripts
+│   ├── docker-compose.yml              # Docker orchestration
+│   └── scripts/                        # Organized executable scripts
+│       ├── automation/                 # Automated scheduling
+│       │   └── scheduler.py            # APScheduler (n8n alternative)
+│       ├── ui/                         # User interfaces
+│       │   ├── streamlit_dashboard.py  # Web dashboard
+│       │   └── telegram_bot.py         # Telegram bot
+│       └── utilities/                  # Helper scripts
+│           ├── quickstart.sh           # Interactive launcher
+│           └── run_backfill.sh         # Historical backfill
 │
 ├── 🔧 MCP Server (Claude Integration)
 │   └── mcp_server/
@@ -214,15 +221,10 @@ stock-ml-prediction-platform/
 │       └── models/                     # Saved ML models
 │
 ├── ⚙️ Automation & Workflows
-│   ├── n8n/                            # n8n workflows
+│   ├── n8n/                            # n8n workflows (legacy)
 │   │   └── config                      # n8n configuration
 │   └── n8n_data/                       # n8n data volume
-│
-├── 📜 Utility Scripts
-│   └── scripts/
-│       ├── quickstart.sh               # Interactive launch menu
-│       ├── run_backfill.sh            # Historical data backfill
-│       └── README.md                   # Scripts documentation
+```
 │
 ├── 🧪 Testing
 │   └── tests/
@@ -268,14 +270,16 @@ stock-ml-prediction-platform/
 | Directory | Purpose | Key Files |
 |-----------|---------|-----------|
 | `mcp_server/scripts/` | Core ML logic and data processing | `models.py`, `backtesting.py`, `indicators.py` |
-| `scripts/` | Utility scripts for automation | `quickstart.sh`, `run_backfill.sh` |
+| `scripts/automation/` | Automated task scheduling | `scheduler.py` (n8n alternative) |
+| `scripts/ui/` | User interface applications | `streamlit_dashboard.py`, `telegram_bot.py` |
+| `scripts/utilities/` | Helper and launcher scripts | `quickstart.sh`, `run_backfill.sh` |
 | `tests/` | Test suite for validation | `test_3_markets.py`, `test_backfill_fix.py` |
 | `backtest_reports/` | Backtesting results (auto-generated) | `backtest_report_*.json` |
 | `docs/` | Comprehensive documentation | `NEW_FEATURES.md`, `REQUIREMENTS.md` |
 | `data/db/` | PostgreSQL data persistence | Database files |
 | `data/models/` | Trained ML models storage | `.pkl` model files |
 | `db-init/` | Database initialization | SQL schema files |
-| `n8n/` & `n8n_data/` | Workflow automation | n8n configuration |
+| `n8n/` & `n8n_data/` | Workflow automation (legacy) | n8n configuration |
 
 ### 🔑 Important Files
 
