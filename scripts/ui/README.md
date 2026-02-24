@@ -4,7 +4,7 @@ This folder contains user-facing interface scripts for visualization and interac
 
 ## 📄 Files
 
-### `streamlit_dashboard.py`
+### `scripts/ui/streamlit_dashboard.py`
 Interactive web dashboard for data visualization and analysis.
 
 **Features:**
@@ -27,7 +27,7 @@ Access at: http://localhost:8501
 
 ---
 
-### `telegram_bot.py`
+### `scripts/ui/telegram_bot.py`
 Telegram bot for mobile alerts and real-time market queries.
 
 **Features:**

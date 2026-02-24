@@ -88,7 +88,7 @@ def _load_features(symbol: str, as_of_date=None) -> pd.DataFrame:
             conn.rollback()
         raise
     finally:
-        if conn is not None and not conn.closed:
+        if conn is not None:
             conn.close()
 
     if not rows:
@@ -776,6 +776,20 @@ def predict_ensemble(symbol: str, force_retrain: bool = False, as_of_date=None, 
             "signal_ensemble": 0
         }
 
+    if as_of_date is None:
+        last_date = df.index.max().normalize()
+        today = pd.Timestamp.utcnow().normalize()
+        if last_date < today:
+            stale = len(pd.bdate_range(last_date, today)) - 1
+            if stale > 3:
+                logger.warning(
+                    "[%s] Data may be stale by %d business days (last=%s, today=%s)",
+                    symbol,
+                    stale,
+                    last_date.date(),
+                    today.date(),
+                )
+
     last_row = df.iloc[-1]
 
     # Señales basadas en reglas (solo informativas, NO votan)
@@ -895,7 +909,7 @@ def compute_signals_for_symbol(symbol: str) -> dict:
             conn.rollback()
         raise
     finally:
-        if conn is not None and not conn.closed:
+        if conn is not None:
             conn.close()
 
     return {

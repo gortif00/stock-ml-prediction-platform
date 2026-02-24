@@ -4,13 +4,13 @@
 
 ### 🚀 Getting Started
 ```bash
-./scripts/quickstart.sh              # Interactive menu - START HERE!
+./scripts/utilities/quickstart.sh              # Interactive menu - START HERE!
 ```
 
-### 📱 Main Applications (Root)
+### 📱 Main Applications (scripts/ui)
 ```
-streamlit_dashboard.py               # Web dashboard (http://localhost:8501)
-telegram_bot.py                      # Telegram bot
+scripts/ui/streamlit_dashboard.py               # Web dashboard (http://localhost:8501)
+scripts/ui/telegram_bot.py                      # Telegram bot
 docker-compose.yml                   # Infrastructure setup
 ```
 
@@ -43,15 +43,20 @@ README.md                            # Main documentation
 
 ### 🔧 Utilities
 ```
-scripts/quickstart.sh                # Interactive launcher ⭐
-scripts/run_backfill.sh             # Historical backfill
+scripts/utilities/quickstart.sh                # Interactive launcher ⭐
+scripts/utilities/run_backfill.sh             # Historical backfill
 tests/                               # Test suite
 ```
 
 ### ⚙️ Configuration
 ```
 .env                                 # Environment variables
-requirements-new-features.txt        # New dependencies
+requirements.txt                     # Unified dependencies
+requirements-dev.txt                 # Testing dependencies
+.env.example                          # Template
+docker-compose.yml                   # Base Docker Compose
+docker-compose.dev.yml               # Dev overrides
+docker-compose.prod.yml              # Prod overrides
 ```
 
 ---
@@ -60,12 +65,12 @@ requirements-new-features.txt        # New dependencies
 
 | Task | File/Command |
 |------|-------------|
-| Launch dashboard | `streamlit run streamlit_dashboard.py` |
-| Start bot | `python telegram_bot.py` |
+| Launch dashboard | `streamlit run scripts/ui/streamlit_dashboard.py` |
+| Start bot | `python scripts/ui/telegram_bot.py` |
 | Run backtest | `python -m mcp_server.scripts.backtesting` |
 | Calculate indicators | `python -m mcp_server.scripts.advanced_indicators` |
 | View docs | `cat docs/NEW_FEATURES.md` |
-| Quick start | `./scripts/quickstart.sh` |
+| Quick start | `./scripts/utilities/quickstart.sh` |
 
 ---
 

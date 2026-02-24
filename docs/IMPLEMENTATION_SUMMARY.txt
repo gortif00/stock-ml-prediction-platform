@@ -14,14 +14,14 @@
 📁 Scripts Python:
   ✅ mcp_server/scripts/backtesting.py                    (450 líneas)
   ✅ mcp_server/scripts/advanced_indicators.py            (380 líneas)
-  ✅ streamlit_dashboard.py                               (420 líneas)
-  ✅ telegram_bot.py                                      (400 líneas)
+  ✅ scripts/ui/streamlit_dashboard.py                               (420 líneas)
+  ✅ scripts/ui/telegram_bot.py                                      (400 líneas)
 
 📁 Documentación:
   ✅ docs/NEW_FEATURES.md                                 (500+ líneas)
   ✅ RESUMEN_IMPLEMENTACION.md                            (350 líneas)
-  ✅ requirements-new-features.txt                        (10 líneas)
-  ✅ quickstart.sh                                        (280 líneas)
+  ✅ requirements.txt                                     (unified deps)
+  ✅ scripts/utilities/quickstart.sh                                        (280 líneas)
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 🎯 FUNCIONALIDADES IMPLEMENTADAS
@@ -102,7 +102,7 @@
 │ OPCIÓN 1: Script Interactivo (Recomendado)                              │
 └──────────────────────────────────────────────────────────────────────────┘
 
-    $ ./quickstart.sh
+    $ ./scripts/utilities/quickstart.sh
 
     Menú interactivo con todas las opciones:
     1) Lanzar Dashboard
@@ -117,7 +117,7 @@
 └──────────────────────────────────────────────────────────────────────────┘
 
     # 1. Instalar dependencias
-    $ pip install -r requirements-new-features.txt
+    $ pip install -r requirements.txt
 
     # 2. Calcular indicadores avanzados
     $ python3 -c "from mcp_server.scripts.advanced_indicators import \
@@ -125,12 +125,12 @@
       compute_advanced_indicators_for_symbol('^IBEX')"
 
     # 3. Lanzar Dashboard
-    $ streamlit run streamlit_dashboard.py
+    $ streamlit run scripts/ui/streamlit_dashboard.py
     # Abrir http://localhost:8501
 
     # 4. (Opcional) Iniciar Bot
     $ export TELEGRAM_BOT_TOKEN='tu_token'
-    $ python3 telegram_bot.py
+    $ python3 scripts/ui/telegram_bot.py
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 🎓 PARA TU PRESENTACIÓN ACADÉMICA
@@ -224,7 +224,7 @@
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
   1. 📊 Prueba el dashboard primero:
-     $ streamlit run streamlit_dashboard.py
+     $ streamlit run scripts/ui/streamlit_dashboard.py
 
   2. 🤖 Configura el bot de Telegram:
      Consigue token en @BotFather y configura TELEGRAM_BOT_TOKEN
@@ -249,4 +249,3 @@
 ║                         ¡ÉXITO CON TU PRESENTACIÓN! 🎓🚀                    ║
 ║                                                                              ║
 ╚══════════════════════════════════════════════════════════════════════════════╝
-

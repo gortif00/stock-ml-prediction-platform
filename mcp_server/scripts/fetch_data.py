@@ -10,6 +10,7 @@ import pandas as pd
 from psycopg2 import Error as PsycopgError
 
 from .config import get_db_conn
+from .data_quality import validate_ohlcv_dataframe
 from . import logger
 
 
@@ -110,6 +111,17 @@ def update_prices_for_symbol(symbol: str, period: str = "1mo") -> int:
             f"Columnas disponibles: {list(df.columns)}"
         )
 
+    # Data quality checks (warnings only)
+    validate_ohlcv_dataframe(
+        df,
+        symbol=symbol,
+        open_col=open_col,
+        high_col=high_col,
+        low_col=low_col,
+        close_col=close_col,
+        volume_col=vol_col,
+    )
+
     conn = None
     try:
         conn = get_db_conn()
@@ -160,5 +172,5 @@ def update_prices_for_symbol(symbol: str, period: str = "1mo") -> int:
         raise
 
     finally:
-        if conn is not None and not conn.closed:
+        if conn is not None:
             conn.close()

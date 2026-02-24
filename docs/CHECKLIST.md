@@ -16,7 +16,7 @@ Use este checklist para verificar que todo funciona correctamente.
 python3 --version
 
 # PostgreSQL
-docker ps | grep postgres
+docker ps | grep db_finanzas
 # O si es local:
 psql -U finanzas -d indices -c "SELECT COUNT(*) FROM prices;"
 
@@ -30,7 +30,7 @@ cat .env
 
 ```bash
 # Instalar nuevas dependencias
-pip install -r requirements-new-features.txt
+pip install -r requirements.txt
 ```
 
 **Verificar:**
@@ -130,7 +130,7 @@ EOF
 
 ```bash
 # Lanzar dashboard
-streamlit run streamlit_dashboard.py
+streamlit run scripts/ui/streamlit_dashboard.py
 ```
 
 **Verificar en http://localhost:8501:**
@@ -184,7 +184,7 @@ echo $TELEGRAM_BOT_TOKEN
 # Si no: export TELEGRAM_BOT_TOKEN='tu_token'
 
 # 2. Lanzar bot
-python3 telegram_bot.py
+python3 scripts/ui/telegram_bot.py
 ```
 
 **Verificar en terminal:**
@@ -223,7 +223,7 @@ Abre Telegram y busca tu bot:
 
 ```bash
 # Ejecutar script interactivo
-./quickstart.sh
+./scripts/utilities/quickstart.sh
 ```
 
 **Verificar:**
@@ -247,8 +247,10 @@ Abre Telegram y busca tu bot:
 - [ ] `docs/NEW_FEATURES.md` - Guía completa
 - [ ] `RESUMEN_IMPLEMENTACION.md` - Resumen ejecutivo
 - [ ] `IMPLEMENTATION_SUMMARY.txt` - Resumen visual
-- [ ] `requirements-new-features.txt` - Dependencias
-- [ ] `quickstart.sh` - Script de inicio
+- [ ] `requirements.txt` - Dependencias unificadas
+- [ ] `requirements-dev.txt` - Dependencias de testing
+- [ ] `requirements-new-features.txt` - Legacy UI deps (opcional)
+- [ ] `scripts/utilities/quickstart.sh` - Script de inicio
 - [ ] `CHECKLIST.md` - Este archivo
 
 **Contenido de documentación:**
@@ -316,7 +318,7 @@ Si encuentras problemas, verifica:
 ### Error de Conexión a BD
 ```bash
 # Verificar PostgreSQL
-docker ps | grep postgres
+docker ps | grep db_finanzas
 
 # Verificar credenciales
 cat .env | grep POSTGRES
@@ -328,7 +330,7 @@ python3 -c "from mcp_server.scripts.config import get_db_conn; conn = get_db_con
 ### Error de Módulos
 ```bash
 # Reinstalar dependencias
-pip install -r requirements-new-features.txt --force-reinstall
+pip install -r requirements.txt --force-reinstall
 ```
 
 ### Dashboard no carga
@@ -337,7 +339,7 @@ pip install -r requirements-new-features.txt --force-reinstall
 rm -rf ~/.streamlit/cache/
 
 # Ejecutar con debug
-streamlit run streamlit_dashboard.py --logger.level=debug
+streamlit run scripts/ui/streamlit_dashboard.py --logger.level=debug
 ```
 
 ### Bot no responde

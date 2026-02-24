@@ -65,7 +65,7 @@ docker exec -it mcp_finance python -m scripts.backfill_predictions
 
 O usar el script helper:
 ```bash
-./run_backfill.sh
+./scripts/utilities/run_backfill.sh
 ```
 
 ## 🔧 Cómo funciona AHORA (Correcto)
@@ -120,7 +120,7 @@ for d in dates:
 
 ### Desde fuera del contenedor:
 ```bash
-./run_backfill.sh
+./scripts/utilities/run_backfill.sh
 ```
 
 ### Desde dentro del contenedor:
@@ -171,7 +171,7 @@ backfill_predictions_for_symbol(
 
 **Opción A: Backfill completo (lento pero correcto)**
 ```bash
-./run_backfill.sh
+./scripts/utilities/run_backfill.sh
 ```
 
 **Opción B: Re-ejecutar flujo manual (más rápido, usa modelos actuales)**

@@ -66,7 +66,7 @@ def _get_latest_price(symbol: str):
             conn.rollback()
         raise
     finally:
-        if conn is not None and not conn.closed:
+        if conn is not None:
             conn.close()
 
 
@@ -109,7 +109,7 @@ def _get_indicators_for_date(symbol: str, date):
             conn.rollback()
         raise
     finally:
-        if conn is not None and not conn.closed:
+        if conn is not None:
             conn.close()
 
 
@@ -147,7 +147,7 @@ def _get_latest_signals(symbol: str):
             conn.rollback()
         raise
     finally:
-        if conn is not None and not conn.closed:
+        if conn is not None:
             conn.close()
 
 
@@ -193,7 +193,7 @@ def _get_recent_news(symbol: str, limit: int = 5) -> list:
             conn.rollback()
         raise
     finally:
-        if conn is not None and not conn.closed:
+        if conn is not None:
             conn.close()
 
 
@@ -273,7 +273,7 @@ def _get_ml_predictions_performance(symbol: str, last_n_days: int = 7) -> Dict[s
             "error": str(e)
         }
     finally:
-        if conn is not None and not conn.closed:
+        if conn is not None:
             conn.close()
 
 

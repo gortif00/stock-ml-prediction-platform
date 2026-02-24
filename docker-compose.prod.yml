@@ -1,0 +1,9 @@
+version: "3.9"
+
+services:
+  mcp:
+    environment:
+      LOG_LEVEL: INFO
+      LOG_TO_FILE: 1
+    volumes:
+      - ./data:/app/data

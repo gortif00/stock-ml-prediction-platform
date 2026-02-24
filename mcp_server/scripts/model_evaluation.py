@@ -184,7 +184,7 @@ def get_model_performance_report(
             "models": [],
         }
     finally:
-        if conn is not None and not conn.closed:
+        if conn is not None:
             conn.close()
 
 

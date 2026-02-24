@@ -157,7 +157,7 @@ Specialized server that:
 
 ### ⚡ n8n (Automation)
 
-**Port**: 5678 | **Credentials**: admin/admin123
+**Port**: 5678 | **Credentials**: from `.env` (`N8N_BASIC_AUTH_USER` / `N8N_BASIC_AUTH_PASSWORD`)
 
 Automation platform for:
 - **Scheduled workflows** (cron jobs)
@@ -209,6 +209,7 @@ stock-ml-prediction-platform/
 │           ├── model_storage.py        # Model persistence
 │           ├── model_evaluation.py     # Model metrics
 │           ├── clean_data.py           # Data cleaning
+│           ├── data_quality.py         # Data quality checks
 │           ├── build_validation_dataset.py
 │           └── config.py               # Database configuration
 │
@@ -256,8 +257,15 @@ stock-ml-prediction-platform/
 │
 ├── 📋 Configuration Files
 │   ├── .env                           # Environment variables
+│   ├── .env.example                   # Template
 │   ├── .gitignore                     # Git ignore rules
-│   ├── requirements-new-features.txt  # New features dependencies
+│   ├── docker-compose.yml             # Base Docker Compose
+│   ├── docker-compose.dev.yml         # Dev overrides
+│   ├── docker-compose.prod.yml        # Prod overrides
+│   ├── requirements.txt               # Unified dependencies
+│   ├── requirements-dev.txt           # Testing dependencies
+│   ├── requirements-new-features.txt  # Legacy UI deps (optional)
+│   ├── requirements-scheduler.txt     # Scheduler deps (optional)
 │   ├── LICENSE                        # MIT License
 │   └── README.md                      # This file
 │
@@ -270,9 +278,9 @@ stock-ml-prediction-platform/
 | Directory | Purpose | Key Files |
 |-----------|---------|-----------|
 | `mcp_server/scripts/` | Core ML logic and data processing | `models.py`, `backtesting.py`, `indicators.py` |
-| `scripts/automation/` | Automated task scheduling | `scheduler.py` (n8n alternative) |
-| `scripts/ui/` | User interface applications | `streamlit_dashboard.py`, `telegram_bot.py` |
-| `scripts/utilities/` | Helper and launcher scripts | `quickstart.sh`, `run_backfill.sh` |
+| `scripts/automation/` | Automated task scheduling | `scripts/automation/scheduler.py` (n8n alternative) |
+| `scripts/ui/` | User interface applications | `scripts/ui/streamlit_dashboard.py`, `scripts/ui/telegram_bot.py` |
+| `scripts/utilities/` | Helper and launcher scripts | `scripts/utilities/quickstart.sh`, `scripts/utilities/run_backfill.sh` |
 | `tests/` | Test suite for validation | `test_3_markets.py`, `test_backfill_fix.py` |
 | `backtest_reports/` | Backtesting results (auto-generated) | `backtest_report_*.json` |
 | `docs/` | Comprehensive documentation | `NEW_FEATURES.md`, `REQUIREMENTS.md` |
@@ -283,12 +291,12 @@ stock-ml-prediction-platform/
 
 ### 🔑 Important Files
 
-- **`streamlit_dashboard.py`** → Web dashboard (4 tabs: Prices, Indicators, Backtesting, Heatmap)
-- **`telegram_bot.py`** → Telegram bot with 10+ commands
+- **`scripts/ui/streamlit_dashboard.py`** → Web dashboard (4 tabs: Prices, Indicators, Backtesting, Heatmap)
+- **`scripts/ui/telegram_bot.py`** → Telegram bot with 10+ commands
 - **`mcp_server/scripts/models.py`** → 7 ML models + ensemble voting
 - **`mcp_server/scripts/backtesting.py`** → Performance validation with metrics
 - **`mcp_server/scripts/advanced_indicators.py`** → MACD, Bollinger, ADX, ATR, etc.
-- **`scripts/quickstart.sh`** → Interactive menu for all features
+- **`scripts/utilities/quickstart.sh`** → Interactive menu for all features
 - **`docker-compose.yml`** → Complete infrastructure setup
 
 ## 🚀 Quick Start
@@ -322,6 +330,15 @@ docker-compose ps
 docker-compose logs -f mcp
 ```
 
+**Dev/Prod Compose:**
+```bash
+# Development (auto-reload for API)
+docker-compose -f docker-compose.yml -f docker-compose.dev.yml up -d
+
+# Production (no code bind mount, file logging)
+docker-compose -f docker-compose.yml -f docker-compose.prod.yml up -d
+```
+
 **✅ Ready!** Services will be available at:
 - 🚀 REST API: http://localhost:8082/docs
 - 🗄️ Adminer: http://localhost:8081
@@ -335,7 +352,10 @@ python3 -m venv venv
 source venv/bin/activate  # On Windows: venv\Scripts\activate
 
 # 2. Install dependencies
-pip install -r mcp_server/requirements.txt
+pip install -r requirements.txt
+
+# 2b. (Optional) Testing tools
+pip install -r requirements-dev.txt
 
 # 3. Start only the database
 docker-compose up -d db
@@ -360,6 +380,15 @@ POSTGRES_USER=finanzas
 POSTGRES_PASSWORD=finanzas_pass
 POSTGRES_DB=indices
 MCP_DB_NAME=indices
+
+# n8n
+N8N_BASIC_AUTH_USER=admin
+N8N_BASIC_AUTH_PASSWORD=change_me
+N8N_TIMEZONE=Europe/Madrid
+
+# Logging / Scheduler
+LOG_LEVEL=INFO
+SCHEDULER_TIMEZONE=Europe/Madrid
 ```
 
 ### Installation Verification
@@ -754,7 +783,7 @@ graph LR
 
 **Option 1: Helper Script (Recommended)**
 ```bash
-./run_backfill.sh
+./scripts/utilities/run_backfill.sh
 ```
 
 **Option 2: Direct from Docker**

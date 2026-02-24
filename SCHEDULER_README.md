@@ -16,19 +16,19 @@ Instead of n8n, you can use **APScheduler** - a pure Python scheduling library t
 
 ```bash
 # Install dependencies
-pip install apscheduler
+pip install -r requirements.txt
 
 # Run scheduler (starts automatically)
-python scheduler.py
+python scripts/automation/scheduler.py
 
 # Run specific task immediately (for testing)
-python scheduler.py --run fetch
-python scheduler.py --run indicators
-python scheduler.py --run predictions
-python scheduler.py --run all
+python scripts/automation/scheduler.py --run fetch
+python scripts/automation/scheduler.py --run indicators
+python scripts/automation/scheduler.py --run predictions
+python scripts/automation/scheduler.py --run all
 
 # List scheduled jobs
-python scheduler.py --list
+python scripts/automation/scheduler.py --list
 ```
 
 **Features:**
@@ -38,7 +38,7 @@ python scheduler.py --list
 - ✅ Built-in logging
 - ✅ Manual task execution for testing
 
-**Schedule:**
+**Schedule (Mon-Fri):**
 - 8:00 AM - Fetch market data
 - 8:30 AM - Compute indicators
 - 9:00 AM - Run ML predictions
@@ -57,12 +57,12 @@ python scheduler.py --list
 crontab -e
 
 # Add these lines:
-0 8 * * * cd /path/to/project && python -c "from scheduler import task_fetch_data; task_fetch_data()"
-30 8 * * * cd /path/to/project && python -c "from scheduler import task_compute_indicators; task_compute_indicators()"
-0 9 * * * cd /path/to/project && python -c "from scheduler import task_ml_predictions; task_ml_predictions()"
-30 9 * * * cd /path/to/project && python -c "from scheduler import task_validate_predictions; task_validate_predictions()"
-0 10 * * * cd /path/to/project && python -c "from scheduler import task_daily_report; task_daily_report()"
-0 2 * * 0 cd /path/to/project && python -c "from scheduler import task_weekly_retraining; task_weekly_retraining()"
+0 8 * * 1-5 cd /path/to/project && python scripts/automation/scheduler.py --run fetch
+30 8 * * 1-5 cd /path/to/project && python scripts/automation/scheduler.py --run indicators
+0 9 * * 1-5 cd /path/to/project && python scripts/automation/scheduler.py --run predictions
+30 9 * * 1-5 cd /path/to/project && python scripts/automation/scheduler.py --run validate
+0 10 * * 1-5 cd /path/to/project && python scripts/automation/scheduler.py --run report
+0 2 * * 0 cd /path/to/project && python scripts/automation/scheduler.py --run retrain
 ```
 
 ---
@@ -76,9 +76,9 @@ scheduler:
   volumes:
     - .:/app
   working_dir: /app
-  command: python scheduler.py
+  command: python scripts/automation/scheduler.py
   depends_on:
-    - postgres
+    - db
 ```
 
 ---
@@ -98,7 +98,7 @@ After=network.target
 Type=simple
 User=your_user
 WorkingDirectory=/path/to/project
-ExecStart=/usr/bin/python3 /path/to/project/scheduler.py
+ExecStart=/usr/bin/python3 /path/to/project/scripts/automation/scheduler.py
 Restart=always
 
 [Install]
@@ -128,7 +128,7 @@ sudo systemctl status stock-scheduler
 
 ## 🎯 Recommendation
 
-**For your project:** Use **APScheduler** (`scheduler.py`)
+**For your project:** Use **APScheduler** (`scripts/automation/scheduler.py`)
 
 **Why?**
 - ✅ No Docker required (simpler)
@@ -142,11 +142,16 @@ sudo systemctl status stock-scheduler
 
 ## 🔧 Customization
 
-Edit `scheduler.py` to change:
+Edit `scripts/automation/scheduler.py` to change:
 - Task schedules (modify `CronTrigger`)
 - Task order
 - Add new tasks
 - Adjust retry logic
+
+Env vars (optional):
+- `SCHEDULER_TIMEZONE` (default: Europe/Madrid)
+- `SCHEDULER_FETCH_PERIOD` (default: 1mo)
+- `LOG_LEVEL`, `LOG_TO_FILE`, `LOG_DIR`
 
 ---
 
@@ -155,7 +160,7 @@ Edit `scheduler.py` to change:
 Scheduler logs to console. To save to file:
 
 ```bash
-python scheduler.py >> logs/scheduler.log 2>&1
+python scripts/automation/scheduler.py >> logs/scheduler.log 2>&1
 ```
 
 ---

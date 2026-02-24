@@ -15,28 +15,79 @@ Features:
 
 import sys
 import os
-from datetime import datetime, time
+import time
+from datetime import datetime
 from apscheduler.schedulers.blocking import BlockingScheduler
 from apscheduler.triggers.cron import CronTrigger
 import logging
+from logging.handlers import RotatingFileHandler
+from zoneinfo import ZoneInfo
+from dotenv import load_dotenv
 
-# Add path for imports
-sys.path.append(os.path.join(os.path.dirname(__file__), 'mcp_server', 'scripts'))
+# Add project root to path for imports (robust to cwd)
+PROJECT_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", ".."))
+if PROJECT_ROOT not in sys.path:
+    sys.path.insert(0, PROJECT_ROOT)
 
-from mcp_server.scripts.fetch_data import fetch_and_store_prices
+# Load environment variables from .env if present
+load_dotenv()
+
+from mcp_server.scripts.fetch_data import update_prices_for_symbol
 from mcp_server.scripts.indicators import compute_indicators_for_symbol
 from mcp_server.scripts.advanced_indicators import compute_advanced_indicators_for_symbol
 from mcp_server.scripts.models import predict_ensemble
 from mcp_server.scripts.validate_predictions import validate_predictions_yesterday
 from mcp_server.scripts.reporting import generate_daily_report
 from mcp_server.scripts.assets import get_symbols
+from mcp_server.scripts.config import close_db_pool
 
-# Logging
-logging.basicConfig(
-    level=logging.INFO,
-    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s'
-)
-logger = logging.getLogger(__name__)
+LOG_LEVEL = os.getenv("LOG_LEVEL", "INFO").upper()
+LOG_DIR = os.getenv("LOG_DIR", "logs")
+LOG_TO_FILE = os.getenv("LOG_TO_FILE", "0") == "1"
+
+
+def _setup_logging() -> logging.Logger:
+    logger = logging.getLogger("scheduler")
+    logger.setLevel(LOG_LEVEL)
+    formatter = logging.Formatter("%(asctime)s - %(levelname)s - %(message)s")
+
+    if not logger.handlers:
+        console = logging.StreamHandler()
+        console.setFormatter(formatter)
+        logger.addHandler(console)
+
+        if LOG_TO_FILE:
+            os.makedirs(LOG_DIR, exist_ok=True)
+            file_handler = RotatingFileHandler(
+                os.path.join(LOG_DIR, "scheduler.log"),
+                maxBytes=5_000_000,
+                backupCount=5,
+            )
+            file_handler.setFormatter(formatter)
+            logger.addHandler(file_handler)
+
+    logger.propagate = False
+    return logger
+
+
+logger = _setup_logging()
+
+# Scheduler settings
+SCHEDULER_TIMEZONE = os.getenv("SCHEDULER_TIMEZONE", "Europe/Madrid")
+FETCH_PERIOD = os.getenv("SCHEDULER_FETCH_PERIOD", "1mo")
+JOB_DEFAULTS = {
+    "coalesce": True,
+    "max_instances": 1,
+    "misfire_grace_time": 900,  # 15 minutes
+}
+try:
+    SCHEDULER_TZ = ZoneInfo(SCHEDULER_TIMEZONE)
+except Exception:
+    logger.warning(
+        "Invalid SCHEDULER_TIMEZONE=%s, using UTC",
+        SCHEDULER_TIMEZONE,
+    )
+    SCHEDULER_TZ = ZoneInfo("UTC")
 
 
 # ============================================================================
@@ -45,101 +96,156 @@ logger = logging.getLogger(__name__)
 
 def task_fetch_data():
     """Task 1: Fetch market data for all symbols."""
+    start = time.time()
     logger.info("=" * 60)
     logger.info("TASK 1: FETCHING MARKET DATA")
     logger.info("=" * 60)
     
     try:
         symbols = get_symbols()
+        total_rows = 0
         for symbol in symbols:
             logger.info(f"Fetching data for {symbol}...")
-            fetch_and_store_prices(symbol, days_back=7)
+            rows = update_prices_for_symbol(symbol, period=FETCH_PERIOD)
+            total_rows += rows
             logger.info(f"✅ {symbol} data updated")
         
-        logger.info("✅ All market data fetched successfully")
+        duration = time.time() - start
+        logger.info(
+            "✅ All market data fetched successfully (symbols=%d, rows=%d, duration=%.1fs)",
+            len(symbols),
+            total_rows,
+            duration,
+        )
     except Exception as e:
         logger.error(f"❌ Error fetching data: {e}")
 
 
 def task_compute_indicators():
     """Task 2: Compute technical indicators for all symbols."""
+    start = time.time()
     logger.info("=" * 60)
     logger.info("TASK 2: COMPUTING TECHNICAL INDICATORS")
     logger.info("=" * 60)
     
     try:
         symbols = get_symbols()
+        total_basic = 0
+        total_advanced = 0
         for symbol in symbols:
             logger.info(f"Computing indicators for {symbol}...")
             
             # Basic indicators
-            compute_indicators_for_symbol(symbol)
+            total_basic += compute_indicators_for_symbol(symbol)
             
             # Advanced indicators
-            compute_advanced_indicators_for_symbol(symbol)
+            total_advanced += compute_advanced_indicators_for_symbol(symbol)
             
             logger.info(f"✅ {symbol} indicators updated")
         
-        logger.info("✅ All indicators computed successfully")
+        duration = time.time() - start
+        logger.info(
+            "✅ All indicators computed successfully (symbols=%d, basic_rows=%d, advanced_rows=%d, duration=%.1fs)",
+            len(symbols),
+            total_basic,
+            total_advanced,
+            duration,
+        )
     except Exception as e:
         logger.error(f"❌ Error computing indicators: {e}")
 
 
 def task_ml_predictions():
     """Task 3: Run ML predictions for all symbols."""
+    start = time.time()
     logger.info("=" * 60)
     logger.info("TASK 3: RUNNING ML PREDICTIONS")
     logger.info("=" * 60)
     
     try:
         symbols = get_symbols()
+        ok = 0
         for symbol in symbols:
             logger.info(f"Running predictions for {symbol}...")
             result = predict_ensemble(symbol, force_retrain=False)
             
             if 'error' not in result:
-                logger.info(f"✅ {symbol}: {result.get('ensemble_signal')} "
-                          f"(confidence: {result.get('ensemble_confidence', 0):.0%})")
+                ok += 1
+                ml_signals = result.get("ml_signals", [])
+                if ml_signals:
+                    count_buy = ml_signals.count(1)
+                    count_sell = ml_signals.count(-1)
+                    count_neutral = ml_signals.count(0)
+                    consensus = max(count_buy, count_sell, count_neutral) / len(ml_signals)
+                else:
+                    consensus = 0
+                logger.info(
+                    f"✅ {symbol}: {result.get('signal_ensemble')} "
+                    f"(confidence: {consensus:.0%})"
+                )
             else:
                 logger.warning(f"⚠️  {symbol}: {result['error']}")
         
-        logger.info("✅ All predictions completed")
+        duration = time.time() - start
+        logger.info(
+            "✅ All predictions completed (symbols=%d, ok=%d, duration=%.1fs)",
+            len(symbols),
+            ok,
+            duration,
+        )
     except Exception as e:
         logger.error(f"❌ Error in predictions: {e}")
 
 
 def task_validate_predictions():
     """Task 4: Validate yesterday's predictions."""
+    start = time.time()
     logger.info("=" * 60)
     logger.info("TASK 4: VALIDATING PREDICTIONS")
     logger.info("=" * 60)
     
     try:
         result = validate_predictions_yesterday()
-        logger.info(f"✅ Validated {result.get('total_validated', 0)} predictions")
+        duration = time.time() - start
+        logger.info(
+            "✅ Validated %d predictions (duration=%.1fs)",
+            result.get("total_validated", 0),
+            duration,
+        )
     except Exception as e:
         logger.error(f"❌ Error validating predictions: {e}")
 
 
 def task_daily_report():
     """Task 5: Generate daily report."""
+    start = time.time()
     logger.info("=" * 60)
     logger.info("TASK 5: GENERATING DAILY REPORT")
     logger.info("=" * 60)
     
     try:
         symbols = get_symbols()
+        total_reports = 0
         for symbol in symbols:
             report = generate_daily_report(symbol)
             logger.info(f"✅ Report generated for {symbol}")
+            if report:
+                total_reports += 1
         
-        logger.info("✅ All reports generated")
+        duration = time.time() - start
+        logger.info(
+            "✅ All reports generated (symbols=%d, reports=%d, duration=%.1fs)",
+            len(symbols),
+            total_reports,
+            duration,
+        )
     except Exception as e:
         logger.error(f"❌ Error generating reports: {e}")
 
 
 def task_weekly_retraining():
     """Task 6: Weekly model retraining."""
+    start = time.time()
     logger.info("=" * 60)
     logger.info("TASK 6: WEEKLY MODEL RETRAINING")
     logger.info("=" * 60)
@@ -151,7 +257,12 @@ def task_weekly_retraining():
             result = predict_ensemble(symbol, force_retrain=True, tune_hyperparams=False)
             logger.info(f"✅ {symbol} models retrained")
         
-        logger.info("✅ All models retrained")
+        duration = time.time() - start
+        logger.info(
+            "✅ All models retrained (symbols=%d, duration=%.1fs)",
+            len(symbols),
+            duration,
+        )
     except Exception as e:
         logger.error(f"❌ Error retraining models: {e}")
 
@@ -162,14 +273,14 @@ def task_weekly_retraining():
 
 def create_scheduler():
     """Create and configure the scheduler."""
-    scheduler = BlockingScheduler()
+    scheduler = BlockingScheduler(timezone=SCHEDULER_TZ, job_defaults=JOB_DEFAULTS)
     
     # ===== DAILY TASKS =====
     
     # Task 1: Fetch data at 8:00 AM (after markets open)
     scheduler.add_job(
         task_fetch_data,
-        CronTrigger(hour=8, minute=0),
+        CronTrigger(day_of_week="mon-fri", hour=8, minute=0),
         id='fetch_data',
         name='Fetch Market Data',
         replace_existing=True
@@ -178,7 +289,7 @@ def create_scheduler():
     # Task 2: Compute indicators at 8:30 AM
     scheduler.add_job(
         task_compute_indicators,
-        CronTrigger(hour=8, minute=30),
+        CronTrigger(day_of_week="mon-fri", hour=8, minute=30),
         id='compute_indicators',
         name='Compute Technical Indicators',
         replace_existing=True
@@ -187,7 +298,7 @@ def create_scheduler():
     # Task 3: ML predictions at 9:00 AM
     scheduler.add_job(
         task_ml_predictions,
-        CronTrigger(hour=9, minute=0),
+        CronTrigger(day_of_week="mon-fri", hour=9, minute=0),
         id='ml_predictions',
         name='Run ML Predictions',
         replace_existing=True
@@ -196,7 +307,7 @@ def create_scheduler():
     # Task 4: Validate predictions at 9:30 AM
     scheduler.add_job(
         task_validate_predictions,
-        CronTrigger(hour=9, minute=30),
+        CronTrigger(day_of_week="mon-fri", hour=9, minute=30),
         id='validate_predictions',
         name='Validate Predictions',
         replace_existing=True
@@ -205,7 +316,7 @@ def create_scheduler():
     # Task 5: Daily report at 10:00 AM
     scheduler.add_job(
         task_daily_report,
-        CronTrigger(hour=10, minute=0),
+        CronTrigger(day_of_week="mon-fri", hour=10, minute=0),
         id='daily_report',
         name='Generate Daily Report',
         replace_existing=True
@@ -295,3 +406,4 @@ if __name__ == '__main__':
             scheduler.start()
         except (KeyboardInterrupt, SystemExit):
             logger.info("\n⏹️  Scheduler stopped by user")
+            close_db_pool()

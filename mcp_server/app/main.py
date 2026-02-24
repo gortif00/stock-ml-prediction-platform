@@ -3,6 +3,7 @@ from datetime import datetime
 from psycopg2 import Error as PsycopgError
 
 from scripts.assets import Market, resolve_symbol
+from scripts.config import close_db_pool
 
 from scripts.save_predictions import save_daily_predictions
 
@@ -40,6 +41,11 @@ app = FastAPI(
     version="0.1.0",
     description="API para datos de mercado, noticias y modelos de predicción.",
 )
+
+
+@app.on_event("shutdown")
+def shutdown_event():
+    close_db_pool()
 
 
 from datetime import date  

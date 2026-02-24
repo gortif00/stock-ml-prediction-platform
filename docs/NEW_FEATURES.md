@@ -123,7 +123,7 @@ def _load_features(symbol: str, as_of_date=None) -> pd.DataFrame:
 
 ### 3. 🎨 Dashboard Interactivo Streamlit
 
-**Archivo:** `streamlit_dashboard.py`
+**Archivo:** `scripts/ui/streamlit_dashboard.py`
 
 Dashboard web profesional con visualización en tiempo real.
 
@@ -162,7 +162,7 @@ Dashboard web profesional con visualización en tiempo real.
 pip install streamlit plotly
 
 # Ejecutar dashboard
-streamlit run streamlit_dashboard.py
+streamlit run scripts/ui/streamlit_dashboard.py
 
 # Abrirá automáticamente en http://localhost:8501
 ```
@@ -182,7 +182,7 @@ Puedes ajustar:
 
 ### 4. 🤖 Bot de Telegram para Alertas
 
-**Archivo:** `telegram_bot.py`
+**Archivo:** `scripts/ui/telegram_bot.py`
 
 Bot interactivo para recibir señales y alertas en tiempo real.
 
@@ -229,7 +229,7 @@ pip install python-telegram-bot
 
 4. **Ejecutar bot:**
 ```bash
-python telegram_bot.py
+python scripts/ui/telegram_bot.py
 ```
 
 5. **Usar bot:**
@@ -272,7 +272,7 @@ if prediction['confidence'] > 0.7:
 ### 1. Instalar Nuevas Dependencias
 
 ```bash
-pip install -r requirements-new-features.txt
+pip install -r requirements.txt
 ```
 
 ### 2. Calcular Indicadores Avanzados
@@ -301,14 +301,14 @@ print(f"Accuracy: {report['summary']['best_accuracy']:.2%}")
 ### 4. Lanzar Dashboard
 
 ```bash
-streamlit run streamlit_dashboard.py
+streamlit run scripts/ui/streamlit_dashboard.py
 ```
 
 ### 5. Iniciar Bot de Telegram
 
 ```bash
 export TELEGRAM_BOT_TOKEN='tu_token'
-python telegram_bot.py
+python scripts/ui/telegram_bot.py
 ```
 
 ---
@@ -387,7 +387,7 @@ Ya implementaste el **Corto Plazo**. Siguiente:
 ### Dashboard no se conecta a DB:
 ```bash
 # Verifica que PostgreSQL esté corriendo
-docker ps | grep postgres
+docker ps | grep db_finanzas
 
 # Verifica configuración en .env
 cat .env

@@ -160,7 +160,7 @@ def fetch_and_store_news_rss(
         raise
 
     finally:
-        if conn is not None and not conn.closed:
+        if conn is not None:
             conn.close()
 
 
@@ -297,7 +297,7 @@ def fetch_and_store_news_yf(
         raise
 
     finally:
-        if conn is not None and not conn.closed:
+        if conn is not None:
             conn.close()
 
 

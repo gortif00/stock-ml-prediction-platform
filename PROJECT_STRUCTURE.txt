@@ -7,21 +7,23 @@
 
 stock-ml-prediction-platform/
 │
-├── 📱 MAIN APPLICATIONS (Root Level)
+├── 📱 MAIN APPLICATIONS (scripts/ui)
 │   │
-│   ├── streamlit_dashboard.py          ⭐ Interactive Web Dashboard
+│   ├── scripts/ui/streamlit_dashboard.py          ⭐ Interactive Web Dashboard
 │   │                                      → 4 tabs: Prices, Indicators, Backtesting, Heatmap
 │   │                                      → Real-time charts with Plotly
 │   │                                      → Model performance comparison
 │   │
-│   ├── telegram_bot.py                 ⭐ Telegram Bot for Alerts
+│   ├── scripts/ui/telegram_bot.py                 ⭐ Telegram Bot for Alerts
 │   │                                      → 10+ interactive commands
 │   │                                      → Personalized subscriptions
 │   │                                      → Real-time predictions & backtesting
 │   │
-│   └── docker-compose.yml              ⭐ Docker Infrastructure
-│                                          → PostgreSQL, FastAPI, n8n, Adminer
-│                                          → One-command deployment
+│   ├── docker-compose.yml              ⭐ Docker Infrastructure
+│   │                                      → PostgreSQL, FastAPI, n8n, Adminer
+│   │                                      → One-command deployment
+│   ├── docker-compose.dev.yml          → Dev overrides (auto-reload)
+│   └── docker-compose.prod.yml         → Prod overrides (logging, no code mount)
 │
 ├── 🔧 MCP SERVER (Claude Integration)
 │   │
@@ -36,7 +38,8 @@ stock-ml-prediction-platform/
 │       │   ├── 📊 Data Acquisition
 │       │   │   ├── fetch_data.py       → Yahoo Finance data ingestion
 │       │   │   ├── assets.py           → Market symbols management
-│       │   │   └── clean_data.py       → Data cleaning & validation
+│       │   │   ├── clean_data.py       → Data cleaning & validation
+│       │   │   └── data_quality.py     → Data quality checks
 │       │   │
 │       │   ├── 📈 Technical Analysis
 │       │   │   ├── indicators.py       → Basic indicators (SMA, RSI, Volatility)
@@ -97,7 +100,7 @@ stock-ml-prediction-platform/
 ├── 📜 UTILITY SCRIPTS
 │   │
 │   └── scripts/
-│       ├── quickstart.sh              ⭐ Interactive Launch Menu
+│       ├── scripts/utilities/quickstart.sh              ⭐ Interactive Launch Menu
 │       │                                 Options:
 │       │                                 1) Launch Dashboard
 │       │                                 2) Start Telegram Bot
@@ -106,7 +109,7 @@ stock-ml-prediction-platform/
 │       │                                 5) Run Everything
 │       │                                 6) View Documentation
 │       │
-│       ├── run_backfill.sh            → Historical data backfill
+│       ├── scripts/utilities/run_backfill.sh            → Historical data backfill
 │       │                                 Generates past predictions
 │       │                                 No look-ahead bias
 │       │
@@ -159,7 +162,10 @@ stock-ml-prediction-platform/
 │   │                                     MCP_PORT=8082
 │   │
 │   ├── .gitignore                     → Git ignore rules
-│   ├── requirements-new-features.txt  ⭐ New features dependencies
+│   ├── requirements.txt               ⭐ Unified dependencies
+│   ├── requirements-dev.txt           ⭐ Testing dependencies
+│   ├── requirements-new-features.txt  → Legacy UI deps (optional)
+│   └── requirements-scheduler.txt     → Scheduler deps (optional)
 │   │                                     streamlit, plotly, python-telegram-bot
 │   │
 │   ├── LICENSE                        → MIT License
@@ -196,9 +202,11 @@ stock-ml-prediction-platform/
 
 1. README.md                           → Start here! Complete documentation
 2. docs/NEW_FEATURES.md                → Latest features guide
-3. scripts/quickstart.sh               → Easy launch script
+3. scripts/utilities/quickstart.sh               → Easy launch script
 4. .env                                → Configuration
 5. docker-compose.yml                  → Infrastructure setup
+6. docker-compose.dev.yml              → Dev overrides
+7. docker-compose.prod.yml             → Prod overrides
 
 ┌─────────────────────────────────────────────────────────────────────────┐
 │ CORE ML FILES                                                           │
@@ -213,8 +221,8 @@ stock-ml-prediction-platform/
 │ USER INTERFACES                                                         │
 └─────────────────────────────────────────────────────────────────────────┘
 
-1. streamlit_dashboard.py              → Web dashboard
-2. telegram_bot.py                     → Mobile alerts
+1. scripts/ui/streamlit_dashboard.py              → Web dashboard
+2. scripts/ui/telegram_bot.py                     → Mobile alerts
 3. mcp_server/app/main.py             → REST API
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
@@ -223,9 +231,9 @@ stock-ml-prediction-platform/
 
 Want to...                           → Check this file
 ───────────────────────────────────────────────────────────────────────────
-Launch everything                    → ./scripts/quickstart.sh
-View predictions                     → streamlit_dashboard.py
-Get mobile alerts                    → telegram_bot.py
+Launch everything                    → ./scripts/utilities/quickstart.sh
+View predictions                     → scripts/ui/streamlit_dashboard.py
+Get mobile alerts                    → scripts/ui/telegram_bot.py
 Add new ML model                     → mcp_server/scripts/models.py
 Add technical indicator              → mcp_server/scripts/advanced_indicators.py
 Run backtesting                      → mcp_server/scripts/backtesting.py

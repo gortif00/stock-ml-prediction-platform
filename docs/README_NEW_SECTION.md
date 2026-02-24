@@ -73,7 +73,7 @@ Professional web interface built with Streamlit:
 
 ```bash
 # Launch dashboard
-streamlit run streamlit_dashboard.py
+streamlit run scripts/ui/streamlit_dashboard.py
 # Opens at http://localhost:8501
 ```
 
@@ -98,7 +98,7 @@ Real-time trading signals delivered to your phone:
 ```bash
 # Setup and run
 export TELEGRAM_BOT_TOKEN='your_token_from_@BotFather'
-python3 telegram_bot.py
+python3 scripts/ui/telegram_bot.py
 ```
 
 ### 🚀 Quick Start Script
@@ -106,7 +106,7 @@ python3 telegram_bot.py
 Interactive menu for easy access to all features:
 
 ```bash
-./quickstart.sh
+./scripts/utilities/quickstart.sh
 
 Options:
 1) 📊 Launch Streamlit Dashboard
@@ -163,7 +163,7 @@ This platform is ideal for demonstrating:
 
 ```bash
 # Install additional dependencies
-pip install -r requirements-new-features.txt
+pip install -r requirements.txt
 
 # Calculate advanced indicators
 python3 -c "from mcp_server.scripts.advanced_indicators import \
@@ -178,7 +178,7 @@ python3 -c "from mcp_server.scripts.backtesting import generate_backtest_report;
   print(report['summary'])"
 
 # Launch dashboard
-streamlit run streamlit_dashboard.py
+streamlit run scripts/ui/streamlit_dashboard.py
 ```
 
 ---

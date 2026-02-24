@@ -51,7 +51,7 @@ def _load_prices(symbol: str) -> pd.DataFrame:
             conn.rollback()
         raise
     finally:
-        if conn is not None and not conn.closed:
+        if conn is not None:
             conn.close()
 
     if not rows:
@@ -172,5 +172,5 @@ def compute_indicators_for_symbol(symbol: str) -> int:
         raise
 
     finally:
-        if conn is not None and not conn.closed:
+        if conn is not None:
             conn.close()

@@ -6,7 +6,7 @@ This folder contains all executable scripts organized by category for project ma
 
 ### `automation/`
 Automated task scheduling and background processes:
-- **`scheduler.py`** - APScheduler-based automation (n8n alternative)
+- **`scripts/automation/scheduler.py`** - APScheduler-based automation (n8n alternative)
   - Daily market data fetches (8:00 AM)
   - Indicator computation (8:30 AM)
   - ML predictions (9:00 AM)
@@ -15,13 +15,13 @@ Automated task scheduling and background processes:
 
 ### `ui/`
 User interface scripts for visualization and interaction:
-- **`streamlit_dashboard.py`** - Interactive web dashboard
+- **`scripts/ui/streamlit_dashboard.py`** - Interactive web dashboard
   - Multi-tab interface (prices, indicators, backtesting, heatmap)
   - Real-time data visualization
   - Model comparison charts
   - Available at http://localhost:8501
 
-- **`telegram_bot.py`** - Telegram bot for mobile alerts
+- **`scripts/ui/telegram_bot.py`** - Telegram bot for mobile alerts
   - Market queries and predictions
   - Personalized subscriptions
   - Real-time notifications
@@ -29,12 +29,12 @@ User interface scripts for visualization and interaction:
 
 ### `utilities/`
 Helper scripts and interactive tools:
-- **`quickstart.sh`** - Interactive menu launcher
+- **`scripts/utilities/quickstart.sh`** - Interactive menu launcher
   - One-stop access to all features
   - Dependency checking
   - Service orchestration
   
-- **`run_backfill.sh`** - Historical data backfill
+- **`scripts/utilities/run_backfill.sh`** - Historical data backfill
   - Generate past predictions without look-ahead bias
   - Useful for testing and validation
 
@@ -53,7 +53,7 @@ python3 scripts/automation/scheduler.py
 ## 📋 Requirements
 
 - Python 3.11+
-- Dependencies: `requirements-new-features.txt`, `requirements-scheduler.txt`
+- Dependencies: `requirements.txt` (unified) or legacy `requirements-new-features.txt`, `requirements-scheduler.txt`
 - PostgreSQL (via Docker)
 - Telegram Bot Token (for bot features)
 

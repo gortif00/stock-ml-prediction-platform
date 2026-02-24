@@ -59,12 +59,12 @@ echo -e "${BLUE}━━━━━━━━━━━━━━━━━━━━━�
 echo -e "${BLUE}📦 2. INSTALANDO DEPENDENCIAS${NC}"
 echo -e "${BLUE}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}"
 
-if [ -f "requirements-new-features.txt" ]; then
-    print_info "Instalando dependencias nuevas..."
-    pip3 install -r requirements-new-features.txt --quiet
+if [ -f "requirements.txt" ]; then
+    print_info "Instalando dependencias del proyecto..."
+    pip3 install -r requirements.txt --quiet
     print_success "Dependencias instaladas"
 else
-    print_warning "requirements-new-features.txt no encontrado"
+    print_warning "requirements.txt no encontrado"
 fi
 
 # 3. Verificar PostgreSQL
@@ -79,7 +79,7 @@ else
     print_warning "PostgreSQL no está corriendo"
     print_info "Iniciando PostgreSQL con docker-compose..."
     if [ -f "docker-compose.yml" ]; then
-        docker-compose up -d postgres
+        docker-compose up -d db
         sleep 3
         print_success "PostgreSQL iniciado"
     else

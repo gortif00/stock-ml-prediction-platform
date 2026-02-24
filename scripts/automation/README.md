@@ -4,15 +4,15 @@ This folder contains automated task scheduling and background processes.
 
 ## 📄 Files
 
-### `scheduler.py`
+### `scripts/automation/scheduler.py`
 APScheduler-based task automation system (alternative to n8n).
 
 **Features:**
-- Daily market data fetching (8:00 AM)
-- Technical indicator computation (8:30 AM)
-- ML predictions generation (9:00 AM)
-- Prediction validation (9:30 AM)
-- Daily report generation (10:00 AM)
+- Daily market data fetching (Mon-Fri 8:00 AM)
+- Technical indicator computation (Mon-Fri 8:30 AM)
+- ML predictions generation (Mon-Fri 9:00 AM)
+- Prediction validation (Mon-Fri 9:30 AM)
+- Daily report generation (Mon-Fri 10:00 AM)
 - Weekly model retraining (Sundays 2:00 AM)
 
 **Usage:**
@@ -29,7 +29,7 @@ python3 scripts/automation/scheduler.py --run all
 
 **Configuration:**
 - Modify task times in the scheduler code
-- Configure markets in `mcp_server/scripts/config.py`
+- Configure markets via `SYMBOLS` / `MARKETS` in `.env`
 - Set database connection in `.env`
 
 **Advantages over n8n:**

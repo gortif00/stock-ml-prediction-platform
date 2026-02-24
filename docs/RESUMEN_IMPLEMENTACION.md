@@ -45,7 +45,7 @@ compute_advanced_indicators_for_symbol("^IBEX")
 
 ### 3. 🎨 Dashboard Streamlit ✅
 
-**Archivo:** `streamlit_dashboard.py`
+**Archivo:** `scripts/ui/streamlit_dashboard.py`
 
 **Implementado:**
 
@@ -74,7 +74,7 @@ compute_advanced_indicators_for_symbol("^IBEX")
 
 **Ejecutar:**
 ```bash
-streamlit run streamlit_dashboard.py
+streamlit run scripts/ui/streamlit_dashboard.py
 # Abre http://localhost:8501
 ```
 
@@ -82,7 +82,7 @@ streamlit run streamlit_dashboard.py
 
 ### 4. 🤖 Bot de Telegram ✅
 
-**Archivo:** `telegram_bot.py`
+**Archivo:** `scripts/ui/telegram_bot.py`
 
 **Comandos Implementados:**
 - ✅ `/start` - Bienvenida
@@ -105,7 +105,7 @@ streamlit run streamlit_dashboard.py
 **Setup:**
 ```bash
 export TELEGRAM_BOT_TOKEN='tu_token'
-python3 telegram_bot.py
+python3 scripts/ui/telegram_bot.py
 ```
 
 ---
@@ -115,13 +115,13 @@ python3 telegram_bot.py
 ### Scripts Python:
 1. `mcp_server/scripts/backtesting.py` - Sistema de backtesting
 2. `mcp_server/scripts/advanced_indicators.py` - Indicadores técnicos
-3. `streamlit_dashboard.py` - Dashboard web
-4. `telegram_bot.py` - Bot de Telegram
+3. `scripts/ui/streamlit_dashboard.py` - Dashboard web
+4. `scripts/ui/telegram_bot.py` - Bot de Telegram
 
 ### Documentación:
 5. `docs/NEW_FEATURES.md` - Guía completa de nuevas funcionalidades
-6. `requirements-new-features.txt` - Dependencias
-7. `quickstart.sh` - Script de inicio rápido
+6. `requirements.txt` - Dependencias unificadas
+7. `scripts/utilities/quickstart.sh` - Script de inicio rápido
 8. `RESUMEN_IMPLEMENTACION.md` - Este archivo
 
 ---
@@ -131,7 +131,7 @@ python3 telegram_bot.py
 ### Opción 1: Script Interactivo (Recomendado)
 
 ```bash
-./quickstart.sh
+./scripts/utilities/quickstart.sh
 ```
 
 Menú interactivo con todas las opciones.
@@ -140,7 +140,7 @@ Menú interactivo con todas las opciones.
 
 ```bash
 # 1. Instalar dependencias
-pip install -r requirements-new-features.txt
+pip install -r requirements.txt
 
 # 2. Calcular indicadores avanzados
 python3 -c "from mcp_server.scripts.advanced_indicators import compute_advanced_indicators_for_symbol; compute_advanced_indicators_for_symbol('^IBEX')"
@@ -149,11 +149,11 @@ python3 -c "from mcp_server.scripts.advanced_indicators import compute_advanced_
 python3 mcp_server/scripts/backtesting.py
 
 # 4. Lanzar dashboard
-streamlit run streamlit_dashboard.py
+streamlit run scripts/ui/streamlit_dashboard.py
 
 # 5. (Opcional) Iniciar bot
 export TELEGRAM_BOT_TOKEN='tu_token'
-python3 telegram_bot.py
+python3 scripts/ui/telegram_bot.py
 ```
 
 ---
@@ -239,14 +239,14 @@ Si quieres seguir mejorando:
 ### Error: ModuleNotFoundError
 
 ```bash
-pip install -r requirements-new-features.txt
+pip install -r requirements.txt
 ```
 
 ### Dashboard no carga datos
 
 ```bash
 # Verificar PostgreSQL
-docker ps | grep postgres
+docker ps | grep db_finanzas
 
 # Verificar datos
 python3 -c "from mcp_server.scripts.config import get_db_conn; conn = get_db_conn(); print('✅ Conexión OK')"

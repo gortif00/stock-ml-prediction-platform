@@ -3,6 +3,12 @@
 # APScheduler for task scheduling (n8n alternative)
 apscheduler>=3.10.4
 
+# Loads .env for scheduler config
+python-dotenv>=1.2.0
+
+# Note: scheduler calls mcp_server modules. For a full install, use:
+#   pip install -r requirements.txt
+
 # Already in main project (verify these exist)
 # pandas>=2.0.0
 # numpy>=1.24.0

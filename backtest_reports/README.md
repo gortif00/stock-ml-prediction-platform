@@ -35,5 +35,5 @@ python -c "import json; print(json.dumps(json.load(open('backtest_reports/backte
 
 Reports are automatically generated when running backtesting via:
 - Dashboard (Tab 3)
-- `scripts/quickstart.sh` (Option 3)
+- `scripts/utilities/quickstart.sh` (Option 3)
 - Direct Python call to `backtesting.py`

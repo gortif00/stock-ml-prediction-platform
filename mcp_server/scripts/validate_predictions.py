@@ -102,7 +102,7 @@ def validate_predictions_for_date(target_date: date):
 
     finally:
         # Cerramos la conexión solo si sigue abierta
-        if conn is not None and not conn.closed:
+        if conn is not None:
             conn.close()
 
 

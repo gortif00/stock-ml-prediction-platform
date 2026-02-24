@@ -4,7 +4,7 @@ This folder contains helper scripts and interactive tools for development and op
 
 ## 📄 Files
 
-### `quickstart.sh`
+### `scripts/utilities/quickstart.sh`
 Interactive menu launcher providing one-stop access to all project features.
 
 **Features:**
@@ -35,7 +35,7 @@ chmod +x scripts/utilities/quickstart.sh
 
 ---
 
-### `run_backfill.sh`
+### `scripts/utilities/run_backfill.sh`
 Historical data backfill script for generating past predictions.
 
 **Purpose:**

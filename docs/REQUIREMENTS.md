@@ -2,15 +2,15 @@
 
 ## Archivos de Requirements
 
-Este proyecto utiliza **3 archivos de requirements** con diferentes propósitos:
+Este proyecto utiliza **varios archivos de requirements** con diferentes propósitos:
 
-### 1️⃣ `requirements.txt` - Dependencias de Producción
+### 1️⃣ `requirements.txt` (root) - Dependencias unificadas
 
 ```bash
 pip install -r requirements.txt
 ```
 
-**Propósito:** Define las dependencias principales del proyecto con **versiones flexibles**.
+**Propósito:** Unifica dependencias del servidor, UI y scheduler con **versiones flexibles**.
 
 **Características:**
 - ✅ Versiones mínimas especificadas (ej: `pandas>=2.3.0`)
@@ -25,10 +25,30 @@ pip install -r requirements.txt
 
 ---
 
-### 2️⃣ `requirements-lock.txt` - Versiones Exactas
+### 2️⃣ `requirements-dev.txt` - Testing y herramientas de desarrollo
 
 ```bash
-pip install -r requirements-lock.txt
+pip install -r requirements-dev.txt
+```
+
+**Propósito:** Añade dependencias de testing (pytest, coverage, etc.).
+
+---
+
+### 3️⃣ `mcp_server/requirements.txt` - Runtime del API (Docker)
+
+```bash
+pip install -r mcp_server/requirements.txt
+```
+
+**Propósito:** Dependencias mínimas para el servidor FastAPI/MCP en Docker.
+
+---
+
+### 4️⃣ `mcp_server/requirements-lock.txt` - Versiones Exactas
+
+```bash
+pip install -r mcp_server/requirements-lock.txt
 ```
 
 **Propósito:** Captura las **versiones exactas** de TODOS los packages instalados.
@@ -47,18 +67,18 @@ pip install -r requirements-lock.txt
 **Generación:**
 ```bash
 # Generar nuevo lock file
-pip freeze > requirements-lock.txt
+pip freeze > mcp_server/requirements-lock.txt
 ```
 
 ---
 
 ## 📊 Comparación
 
-| Característica | requirements.txt | requirements-lock.txt |
-|----------------|------------------|----------------------|
-| **Packages** | ~30 principales | 82 totales (incluye deps) |
+| Característica | requirements.txt | mcp_server/requirements-lock.txt |
+|----------------|------------------|----------------------------------|
+| **Packages** | Unificadas (server + UI + scheduler) | Exactas (incluye deps) |
 | **Versiones** | Flexibles (>=) | Exactas (==) |
-| **Propósito** | Desarrollo | Producción |
+| **Propósito** | Desarrollo local | Producción |
 | **Actualizaciones** | Permitidas | Bloqueadas |
 | **Reproducibilidad** | Alta | Absoluta |
 
@@ -77,17 +97,20 @@ source venv/bin/activate  # macOS/Linux
 # 2. Instalar dependencias flexibles
 pip install -r requirements.txt
 
+# 2b. (Opcional) Herramientas de testing
+pip install -r requirements-dev.txt
+
 # 3. Trabajar en el proyecto...
 ```
 
 ### Antes de Commit
 
 ```bash
-# Actualizar lock file si cambiaste dependencias
-pip freeze > requirements-lock.txt
+# Actualizar lock file si cambiaste dependencias del servidor
+pip freeze > mcp_server/requirements-lock.txt
 
 # Commit ambos archivos
-git add requirements.txt requirements-lock.txt
+git add requirements.txt mcp_server/requirements-lock.txt
 git commit -m "Update dependencies"
 ```
 
@@ -95,7 +118,7 @@ git commit -m "Update dependencies"
 
 ```bash
 # Usar versiones exactas para reproducibilidad
-pip install -r requirements-lock.txt
+pip install -r mcp_server/requirements-lock.txt
 ```
 
 ---
@@ -109,7 +132,7 @@ pip install -r requirements-lock.txt
 pip install --upgrade 'pandas>=2.3.0,<3.0.0'
 
 # Regenerar lock file
-pip freeze > requirements-lock.txt
+pip freeze > mcp_server/requirements-lock.txt
 ```
 
 ### Actualizar Todos los Packages
@@ -122,7 +145,7 @@ pip list --outdated
 pip install --upgrade -r requirements.txt
 
 # Regenerar lock file
-pip freeze > requirements-lock.txt
+pip freeze > mcp_server/requirements-lock.txt
 
 # Probar que todo funciona
 pytest  # o tu comando de tests
@@ -170,7 +193,7 @@ pip install -r requirements.txt
 
 ```bash
 # Solución: Usar lock file
-pip install -r requirements-lock.txt
+pip install -r mcp_server/requirements-lock.txt
 ```
 
 ### Error: "pip: command not found"
@@ -206,7 +229,7 @@ pip check
 ## 📝 Notas
 
 - **Siempre** usa entornos virtuales (`venv`)
-- **Actualiza** `requirements-lock.txt` después de cambiar dependencias
+- **Actualiza** `mcp_server/requirements-lock.txt` después de cambiar dependencias
 - **Prueba** tu aplicación después de actualizar packages
 - **Documenta** por qué necesitas cada package
 

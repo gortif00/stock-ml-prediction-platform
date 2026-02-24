@@ -6,6 +6,9 @@ en símbolos válidos de Yahoo Finance, facilitando el uso de la API.
 """
 
 from enum import Enum
+import os
+
+from . import DEFAULT_SYMBOLS
 
 # Mapa de alias "humanos" -> símbolo real de yfinance
 # Permite usar nombres como "IBEX35" en lugar de "^IBEX"
@@ -87,6 +90,21 @@ class Market(str, Enum):
     ibex35 = "IBEX35"   # España - IBEX 35
     sp500 = "SP500"     # USA - S&P 500
     nikkei = "NIKKEI"   # Japón - Nikkei 225
+
+
+def get_symbols() -> list[str]:
+    """Devuelve la lista de símbolos a procesar (configurable por env)."""
+    raw = os.getenv("SYMBOLS") or os.getenv("MARKETS")
+    if raw:
+        symbols = []
+        for item in raw.split(","):
+            name = item.strip()
+            if not name:
+                continue
+            symbols.append(resolve_symbol(name))
+        return symbols
+
+    return list(DEFAULT_SYMBOLS)
 
 
 def resolve_symbol(market_or_symbol: str) -> str:

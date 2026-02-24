@@ -9,14 +9,16 @@
 📁 FOLDER STRUCTURE - ORGANIZED PROFESSIONALLY
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
-✅ MAIN APPS (Root Level)
-   ├── streamlit_dashboard.py          → Web dashboard
-   ├── telegram_bot.py                 → Telegram bot
-   └── docker-compose.yml              → Infrastructure
+✅ MAIN APPS (scripts/ui)
+   ├── scripts/ui/streamlit_dashboard.py          → Web dashboard
+   ├── scripts/ui/telegram_bot.py                 → Telegram bot
+   ├── docker-compose.yml              → Infrastructure
+   ├── docker-compose.dev.yml          → Dev overrides
+   └── docker-compose.prod.yml         → Prod overrides
 
 ✅ SCRIPTS FOLDER (./scripts/)
-   ├── quickstart.sh                   → Interactive launcher ⭐
-   ├── run_backfill.sh                → Historical backfill
+   ├── scripts/utilities/quickstart.sh                   → Interactive launcher ⭐
+   ├── scripts/utilities/run_backfill.sh                → Historical backfill
    └── README.md                       → Scripts documentation
 
 ✅ TESTS FOLDER (./tests/)
@@ -45,7 +47,10 @@
    ├── README.md                      ⭐ UPDATED with structure
    ├── PROJECT_STRUCTURE.txt          → Visual tree (new)
    ├── STRUCTURE_GUIDE.md             → Quick reference (new)
-   └── requirements-new-features.txt  → Dependencies
+   ├── requirements.txt               → Unified dependencies
+   ├── requirements-dev.txt           → Testing dependencies
+   ├── requirements-new-features.txt  → Legacy UI deps (optional)
+   └── requirements-scheduler.txt     → Scheduler deps (optional)
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 📝 CHANGES MADE
@@ -80,16 +85,16 @@
 
 1. Read:     README.md
 2. Quick:    STRUCTURE_GUIDE.md
-3. Launch:   ./scripts/quickstart.sh
+3. Launch:   ./scripts/utilities/quickstart.sh
 4. Features: docs/NEW_FEATURES.md
 
 ┌──────────────────────────────────────────────────────────────────────────┐
 │ WANT TO...                                                               │
 └──────────────────────────────────────────────────────────────────────────┘
 
-Run dashboard?           → streamlit run streamlit_dashboard.py
-Use Telegram bot?        → python telegram_bot.py
-Launch everything?       → ./scripts/quickstart.sh
+Run dashboard?           → streamlit run scripts/ui/streamlit_dashboard.py
+Use Telegram bot?        → python scripts/ui/telegram_bot.py
+Launch everything?       → ./scripts/utilities/quickstart.sh
 Add ML model?            → Edit mcp_server/scripts/models.py
 Add indicator?           → Edit mcp_server/scripts/advanced_indicators.py
 Run tests?               → python tests/test_3_markets.py
@@ -179,20 +184,22 @@ Check structure:
 $ ls -la
 
 Should see:
-✅ streamlit_dashboard.py
-✅ telegram_bot.py
+✅ scripts/ui/streamlit_dashboard.py
+✅ scripts/ui/telegram_bot.py
 ✅ docker-compose.yml
+✅ docker-compose.dev.yml
+✅ docker-compose.prod.yml
 ✅ README.md (updated)
 ✅ PROJECT_STRUCTURE.txt (new)
 ✅ STRUCTURE_GUIDE.md (new)
-✅ scripts/ (with quickstart.sh, run_backfill.sh)
+✅ scripts/ (with scripts/utilities/quickstart.sh, scripts/utilities/run_backfill.sh)
 ✅ tests/ (with test files)
 ✅ docs/ (with all documentation)
 ✅ backtest_reports/ (with README)
 ✅ reports/ (with README)
 
 Verify paths:
-$ ./scripts/quickstart.sh        # Should work
+$ ./scripts/utilities/quickstart.sh        # Should work
 $ ls tests/                      # Should show test files
 $ ls docs/                       # Should show documentation
 $ cat PROJECT_STRUCTURE.txt      # Should show tree
@@ -211,4 +218,4 @@ Next Steps:
 1. Review: README.md (has complete structure)
 2. Check: PROJECT_STRUCTURE.txt (visual tree)
 3. Quick: STRUCTURE_GUIDE.md (fast reference)
-4. Launch: ./scripts/quickstart.sh
+4. Launch: ./scripts/utilities/quickstart.sh

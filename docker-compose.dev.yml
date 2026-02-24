@@ -1,0 +1,8 @@
+version: "3.9"
+
+services:
+  mcp:
+    command: uvicorn app.main:app --reload --host 0.0.0.0 --port 8000
+    environment:
+      LOG_LEVEL: DEBUG
+      LOG_TO_FILE: 0
